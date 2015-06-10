@@ -32,7 +32,9 @@ so that the upstream site can identify the user.
 
 ### Running the application
 
-`$ GOVUK_UPSTREAM_URI=https://www.dev.gov.uk ./startup.sh`
+```
+$ GOVUK_UPSTREAM_URI=https://www.dev.gov.uk ./startup.sh
+```
 
 ### Running the test suite
 
