@@ -39,7 +39,7 @@ $ GOVUK_UPSTREAM_URI=https://www.dev.gov.uk ./startup.sh
 ### Running the test suite
 
 ```
-$ bundle exec rake
+$ bundle exec rspec
 ```
 
 ## Licence
