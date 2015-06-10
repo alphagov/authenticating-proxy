@@ -6,7 +6,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module GovukAuthenticatingProxy
+module AuthenticatingProxy
   class Application < Rails::Application
     config.autoload_paths += %W(#{config.root}/lib)
 

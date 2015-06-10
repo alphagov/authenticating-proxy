@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Proxying requests" do
   include Rack::Test::Methods
   def app
-    GovukAuthenticatingProxy::Application.new
+    AuthenticatingProxy::Application.new
   end
 
   let(:body) { "abc" }
