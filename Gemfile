@@ -8,6 +8,5 @@ group :development, :test do
   gem 'rack-test', '0.6.3'
   gem 'webmock', '1.21.0'
   gem 'byebug'
-  gem 'spring'
 end
 
