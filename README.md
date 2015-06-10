@@ -1,4 +1,4 @@
-# govuk-authenticating-proxy
+# authenticating-proxy
 
 An authenticating proxy application that proxies requests to an upstream site.
 
