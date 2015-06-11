@@ -13,8 +13,7 @@ class Proxy < Rack::Proxy
   end
 
   def proxy?(env)
-    # /auth requests will not be proxied once we have gds-sso
-    true
+    env['PATH_INFO'] != '/healthcheck'
   end
 
   def rewrite_env(env)
