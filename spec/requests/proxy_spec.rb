@@ -1,11 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Proxying requests" do
-  include Rack::Test::Methods
-  def app
-    AuthenticatingProxy::Application.new
-  end
-
+RSpec.describe "Proxying requests", type: :request do
   let(:body) { "abc" }
   let(:path) { "/foo" }
   let(:upstream_uri) { ENV['GOVUK_UPSTREAM_URI'] }
@@ -15,6 +10,6 @@ RSpec.describe "Proxying requests" do
 
     get path
 
-    expect(last_response.body).to eq(body)
+    expect(response.body).to eq(body)
   end
 end
