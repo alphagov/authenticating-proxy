@@ -1,6 +1,5 @@
 #!/bin/bash -x
 set -e
-
 export RAILS_ENV=test
 
 git clean -fdx
