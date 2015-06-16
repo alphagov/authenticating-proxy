@@ -72,6 +72,6 @@ Rails.application.configure do
   config.active_support.deprecation = :notify
 
   config.logstasher.enabled = true
-  config.logstasher.logger = Logger.new(Rails.root.join("/log/#{Rails.env}.json.log"))
+  config.logstasher.logger = Logger.new(Rails.root.join("log/#{Rails.env}.json.log"))
   config.logstasher.suppress_app_log = true
 end
