@@ -5,7 +5,7 @@ class Proxy < Rack::Proxy
 
   def initialize(app, upstream_url)
     @app = app
-    @upstream_url = URI.parse(upstream_url)
+    super(backend: upstream_url, streaming: false)
   end
 
   def call(env)
@@ -17,16 +17,11 @@ class Proxy < Rack::Proxy
   end
 
   def rewrite_env(env)
-    env['rack.url_scheme'] = upstream_url.scheme
-    env["HTTP_HOST"] = upstream_url.host
-    env['SERVER_PORT'] = upstream_url.port
-    # rack-proxy doesn't cope well with gzipped/deflated content
-    env.delete('HTTP_ACCEPT_ENCODING')
     # Here's where we will set the X-GOVUK-AUTHENTICATED-USER header
     env
   end
 
-   def rewrite_response(response)
+  def rewrite_response(response)
     status, headers, body = response
 
     [
