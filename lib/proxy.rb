@@ -26,7 +26,7 @@ class Proxy < Rack::Proxy
   end
 
   def rewrite_env(env)
-    # Here's where we will set the X-GOVUK-AUTHENTICATED-USER header
+    add_authenticated_user_header(env)
     env
   end
 
@@ -48,6 +48,12 @@ private
     if env['warden']
       user = env['warden'].authenticate!
       debug_logging(env, "authenticated as #{user.email}")
+    end
+  end
+
+  def add_authenticated_user_header(env)
+    if env['warden']
+      env['HTTP_X_GOVUK_AUTHENTICATED_USER'] = env['warden'].user.id.to_s
     end
   end
 
