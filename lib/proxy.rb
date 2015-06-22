@@ -5,6 +5,7 @@ class Proxy < Rack::Proxy
 
   def initialize(app, upstream_url)
     @app = app
+    @upstream_url = URI(upstream_url)
     super(backend: upstream_url, streaming: false)
   end
 
@@ -26,6 +27,8 @@ class Proxy < Rack::Proxy
   end
 
   def rewrite_env(env)
+    # Proxying hangs in the VM unless the host header is explicitly overridden here.
+    env['HTTP_HOST'] = upstream_url.host
     add_authenticated_user_header(env)
     env
   end
