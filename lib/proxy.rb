@@ -9,17 +9,20 @@ class Proxy < Rack::Proxy
   end
 
   def call(env)
-    if proxy?(env)
-      debug_logging(env, "Proxing request: #{env['PATH_INFO']}")
+    path = env['PATH_INFO']
+
+    if proxy?(path)
+      authenticate!(env)
+      debug_logging(env, "Proxing request: #{path}")
       super
     else
-      debug_logging(env, "Request not being proxied: #{env['PATH_INFO']}")
+      debug_logging(env, "Request not being proxied: #{path}")
       @app.call(env)
     end
   end
 
-  def proxy?(env)
-    env['PATH_INFO'] != '/healthcheck'
+  def proxy?(path)
+    !healthcheck_path?(path) && !gds_sso_path?(path)
   end
 
   def rewrite_env(env)
@@ -40,6 +43,21 @@ class Proxy < Rack::Proxy
   end
 
 private
+
+  def authenticate!(env)
+    if env['warden']
+      user = env['warden'].authenticate!
+      debug_logging(env, "authenticated as #{user.email}")
+    end
+  end
+
+  def healthcheck_path?(path)
+    path == '/healthcheck'
+  end
+
+  def gds_sso_path?(path)
+    path.starts_with?("/auth/")
+  end
 
   def debug_logging(env, message)
     env['action_dispatch.logger'] and env['action_dispatch.logger'].debug message
