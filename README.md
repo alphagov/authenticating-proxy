@@ -32,9 +32,21 @@ so that the upstream service can identify the user.
 
 ### Running the application
 
+The application relies on the `GOVUK_UPSTREAM_URI` being set to run:
+
 ```
 $ GOVUK_UPSTREAM_URI=https://www.dev.gov.uk ./startup.sh
 ```
+
+To run the authenticating proxy on the development VM and route it through to
+government-frontend, you can `bowl` as follows:
+
+```
+$ GOVUK_UPSTREAM_URI=http://government-frontend.dev.gov.uk GDS_SSO_STRATEGY=real bowl authenticating-proxy
+```
+
+Note that `GDS_SSO_STRATEGY` is set to true to tell gds-sso not to use mock mode
+and authenticate via a real signon service.
 
 ### Running the test suite
 
