@@ -56,7 +56,7 @@ private
 
   def add_authenticated_user_header(env)
     if env['warden']
-      env['HTTP_X_GOVUK_AUTHENTICATED_USER'] = env['warden'].user.id.to_s
+      env['HTTP_X_GOVUK_AUTHENTICATED_USER'] = env['warden'].user.uid.to_s
     end
   end
 
