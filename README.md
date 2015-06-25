@@ -8,9 +8,9 @@ An authenticating proxy application that proxies requests to an upstream service
 
 ## Nomenclature
 
-- **`X-GOVUK-AUTHENTICATED-USER`**: The HTTP header which contains the ID number
-   of the authenticated user (as reported by signonotron).
-- **upstream service**: The destination service that the app is proxying through to.
+- **`X-GOVUK-AUTHENTICATED-USER`**: The HTTP header which contains the UID of
+  the authenticated user (as reported by signonotron).
+- **upstream service**: The destination service that the app is proxying to.
 - **signonotron**: Single signon service for GOV.UK authentication.
 - **`GOVUK_UPSTREAM_URI`**: environment variable used to specify the upstream
   site.

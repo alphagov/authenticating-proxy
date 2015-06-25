@@ -21,7 +21,7 @@ RSpec.describe "Proxying requests", type: :request do
   end
 
   context "authenticated user" do
-    let(:authenticated_user_id) { User.first.id }
+    let(:authenticated_user_uid) { User.first.uid }
     before do
       stub_request(:get, upstream_uri + upstream_path).to_return(body: body)
       get upstream_path
@@ -31,9 +31,9 @@ RSpec.describe "Proxying requests", type: :request do
       expect(response.body).to eq(body)
     end
 
-    it "includes an identifier for the authenticated user in the upstream request headers" do
+    it "includes the user's UID in the upstream request headers" do
       expect(WebMock).to have_requested(:get, upstream_uri + upstream_path).
-        with(headers: { 'X-Govuk-Authenticated-User' => authenticated_user_id })
+        with(headers: { 'X-Govuk-Authenticated-User' => authenticated_user_uid })
     end
   end
 end
