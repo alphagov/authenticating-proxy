@@ -38,15 +38,24 @@ The application relies on the `GOVUK_UPSTREAM_URI` being set to run:
 $ GOVUK_UPSTREAM_URI=https://www.dev.gov.uk ./startup.sh
 ```
 
-To run the authenticating proxy on the development VM and route it through to
-government-frontend, you can `bowl` as follows:
+On the development VM, `GOVUK_UPSTREAM_URI` defaults to government-frontend. If
+you want to run authenticating-proxy against a real running instance of signon
+(instead of the usual mock-mode), then use the following `bowl` command:
 
 ```
-$ GOVUK_UPSTREAM_URI=http://government-frontend.dev.gov.uk GDS_SSO_STRATEGY=real bowl authenticating-proxy
+$ GDS_SSO_STRATEGY=real bowl authenticating-proxy signon
 ```
 
-Note that `GDS_SSO_STRATEGY` is set to true to tell gds-sso not to use mock mode
-and authenticate via a real signon service.
+Note that `GDS_SSO_STRATEGY` is set to true to stop gds-sso from using mock mode
+and instead authenticate via a running local version of signon. If you are going
+to run against real signon, then you will need to add authenticating-proxy as an
+application in signon and also create a user with permission to access it:
+
+```
+# From the signon directory:
+$ bundle exec rake applications:create name=authenticating-proxy description="authenticating proxy" home_uri="http://authenticating-proxy.dev.gov.uk" redirect_uri="http://authenticating-proxy.dev.gov.uk/auth/gds/callback"
+$ bundle exec rake users:create name='User Name' email=user@email.com applications=authenticating-proxy
+```
 
 ### Running the test suite
 
