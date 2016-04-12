@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.5.1'
+gem 'rails', '4.2.6'
 gem 'rack-proxy'
 gem 'logstasher', '0.6.5'
 gem 'plek', '~> 1.10'
