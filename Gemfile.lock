@@ -39,9 +39,9 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     addressable (2.4.0)
-    airbrake (4.2.1)
-      builder
-      multi_json
+    airbrake (5.5.0)
+      airbrake-ruby (~> 1.5)
+    airbrake-ruby (1.5.0)
     arel (7.1.2)
     bson (4.1.1)
     builder (3.2.2)
@@ -199,7 +199,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  airbrake (~> 4.2.1)
+  airbrake (~> 5.5)
+  airbrake-ruby (= 1.5)
   byebug
   gds-sso (~> 13.0.0)
   logstasher (= 0.6.5)
