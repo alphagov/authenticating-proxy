@@ -4,9 +4,8 @@ class Proxy < Rack::Proxy
   attr_accessor :upstream_url
 
   def initialize(app, upstream_url)
-    @app = app
     @upstream_url = URI(upstream_url)
-    super(backend: upstream_url, streaming: false)
+    super(app, backend: upstream_url, streaming: false)
   end
 
   def call(env)
