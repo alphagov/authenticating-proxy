@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-REPOSITORY = 'publishing-api'
+REPOSITORY = 'authenticating-proxy'
 
 node {
    def govuk = load '/var/lib/jenkins/groovy_scripts/govuk_jenkinslib.groovy'
