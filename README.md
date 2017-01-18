@@ -14,6 +14,8 @@ An authenticating proxy application that proxies requests to an upstream service
 - **signonotron**: Single signon service for GOV.UK authentication.
 - **`GOVUK_UPSTREAM_URI`**: environment variable used to specify the upstream
   site.
+- **`GOVUK_FACT_CHECK_ID`**: The HTTP header which contains the UUID of a fact
+  check, extracted from a token.
 
 ## Technical documentation
 
@@ -21,6 +23,15 @@ This is a Rails application that proxies requests to an upstream service, first
 performing authentication using `gds-sso` to ensure that only authenticated
 users are able to view the site. It sets an `X-GOVUK-AUTHENTICATED-USER` header
 so that the upstream service can identify the user.
+
+The application also supports bypassing authentication via a valid JWT token.
+If the URL being requested includes a `token` querystring containing a valid
+token encoded with the value in the `JWT_AUTH_SECRET` environment variable, and
+that token contains a `sub` key, the value of that key is passed upstream in
+the `GOVUK_FACT_CHECK_ID` header and authentication is not performed.
+
+Authenticating-proxy does not itself check that the fact_check_id is actually
+valid; this will be done by content-store.
 
 ### Dependencies
 
@@ -62,6 +73,20 @@ $ bundle exec rake users:create name='User Name' email=user@email.com applicatio
 ```
 $ bundle exec rspec
 ```
+
+### Generating a fact check token
+
+Applications which want to generate a token valid for fact checking will need to
+have access to the same value for the JWT_AUTH_SECRET environment variable. They
+can then use the JWT library - which will probably already be present, since it
+is a dependency of gds-sso via oauth2 - to encode a token as follows:
+
+```
+JWT.encode({ 'sub' => fact_check_id }, jwt_auth_secret, 'HS256')
+```
+
+where `fact_check_id` is the UUID for the fact check of the content item, and
+`jwt_auth_secret` is the secret supplied in the environment variable.
 
 ## Licence
 

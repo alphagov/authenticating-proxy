@@ -12,7 +12,7 @@ class Proxy < Rack::Proxy
     path = env['PATH_INFO']
 
     if proxy?(path)
-      authenticate!(env)
+      process_token_or_authenticate!(env)
       debug_logging(env, "Proxing request: #{path}")
       super
     else
@@ -29,6 +29,7 @@ class Proxy < Rack::Proxy
     # Proxying hangs in the VM unless the host header is explicitly overridden here.
     env['HTTP_HOST'] = upstream_url.host
     add_authenticated_user_header(env)
+    remove_token_param(env)
     env
   end
 
@@ -46,6 +47,24 @@ class Proxy < Rack::Proxy
 
 private
 
+  def jwt_auth_secret
+    Rails.application.config.jwt_auth_secret
+  end
+
+  def process_token_or_authenticate!(env)
+    request = Rack::Request.new(env)
+    if token = request.params['token']
+      content_id = process_token(token, env)
+    end
+    authenticate!(env) unless content_id
+  end
+
+  def process_token(token, env)
+    payload, header = JWT.decode(token, jwt_auth_secret, true, { algorithm: 'HS256' })
+    env['HTTP_GOVUK_FACT_CHECK_ID'] = payload['sub'] if payload.key?('sub')
+  rescue JWT::DecodeError
+  end
+
   def authenticate!(env)
     if env['warden']
       user = env['warden'].authenticate!
@@ -54,9 +73,16 @@ private
   end
 
   def add_authenticated_user_header(env)
-    if env['warden']
-      env['HTTP_X_GOVUK_AUTHENTICATED_USER'] = env['warden'].user.uid.to_s
-    end
+    env['HTTP_X_GOVUK_AUTHENTICATED_USER'] = if env['warden'] && env['warden'].user
+                                               env['warden'].user.uid.to_s
+                                             else
+                                               'invalid'
+                                             end
+  end
+
+  def remove_token_param(env)
+    values = CGI.parse(env['QUERY_STRING']).except('token')
+    env['QUERY_STRING'] = URI.encode_www_form(values)
   end
 
   def healthcheck_path?(path)
