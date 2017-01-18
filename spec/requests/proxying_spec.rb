@@ -38,6 +38,11 @@ RSpec.describe "Proxying requests", type: :request do
         expect(response.status).to eq(200)
       end
 
+      it "marks the user id as invalid in the upstream request headers" do
+      expect(WebMock).to have_requested(:get, upstream_uri + upstream_path).
+        with(headers: { 'X-Govuk-Authenticated-User' => 'invalid' })
+      end
+
       context "with an invalid token" do
         let(:token) { JWT.encode({ 'sub' => fact_check_id }, 'invalid', 'HS256') }
         it "redirects the user for authentication" do

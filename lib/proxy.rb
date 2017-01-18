@@ -73,9 +73,11 @@ private
   end
 
   def add_authenticated_user_header(env)
-    if env['warden'] && env['warden'].user
-      env['HTTP_X_GOVUK_AUTHENTICATED_USER'] = env['warden'].user.uid.to_s
-    end
+    env['HTTP_X_GOVUK_AUTHENTICATED_USER'] = if env['warden'] && env['warden'].user
+                                               env['warden'].user.uid.to_s
+                                             else
+                                               'invalid'
+                                             end
   end
 
   def remove_token_param(env)
