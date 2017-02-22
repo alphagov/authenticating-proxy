@@ -29,7 +29,6 @@ class Proxy < Rack::Proxy
     # Proxying hangs in the VM unless the host header is explicitly overridden here.
     env['HTTP_HOST'] = upstream_url.host
     add_authenticated_user_header(env)
-    remove_token_param(env)
     env
   end
 
@@ -78,11 +77,6 @@ private
                                              else
                                                'invalid'
                                              end
-  end
-
-  def remove_token_param(env)
-    values = CGI.parse(env['QUERY_STRING']).except('token')
-    env['QUERY_STRING'] = URI.encode_www_form(values)
   end
 
   def healthcheck_path?(path)

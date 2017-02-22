@@ -25,12 +25,12 @@ RSpec.describe "Proxying requests", type: :request do
       let(:token) { JWT.encode({ 'sub' => fact_check_id }, jwt_auth_secret, 'HS256') }
       before do
         allow_any_instance_of(Proxy).to receive(:jwt_auth_secret).and_return(jwt_auth_secret)
-        stub_request(:get, upstream_uri + upstream_path).to_return(body: body)
+        stub_request(:get, upstream_uri + upstream_path + "?token=#{token}").to_return(body: body)
         get "#{upstream_path}?token=#{token}"
       end
 
       it "includes the decoded fact_check_id in the upstream request headers" do
-        expect(WebMock).to have_requested(:get, upstream_uri + upstream_path).
+        expect(WebMock).to have_requested(:get, upstream_uri + upstream_path + "?token=#{token}").
           with(headers: { 'Govuk-Fact-Check-Id' => fact_check_id })
       end
 
@@ -39,7 +39,7 @@ RSpec.describe "Proxying requests", type: :request do
       end
 
       it "marks the user id as invalid in the upstream request headers" do
-      expect(WebMock).to have_requested(:get, upstream_uri + upstream_path).
+      expect(WebMock).to have_requested(:get, upstream_uri + upstream_path + "?token=#{token}").
         with(headers: { 'X-Govuk-Authenticated-User' => 'invalid' })
       end
 
