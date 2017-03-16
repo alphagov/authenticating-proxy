@@ -21,17 +21,17 @@ RSpec.describe "Proxying requests", type: :request do
 
     context "with a JWT token" do
       let(:jwt_auth_secret) { 'my$ecretK3y' }
-      let(:fact_check_id) { SecureRandom.uuid }
-      let(:token) { JWT.encode({ 'sub' => fact_check_id }, jwt_auth_secret, 'HS256') }
+      let(:auth_bypass_id) { SecureRandom.uuid }
+      let(:token) { JWT.encode({ 'sub' => auth_bypass_id }, jwt_auth_secret, 'HS256') }
       before do
         allow_any_instance_of(Proxy).to receive(:jwt_auth_secret).and_return(jwt_auth_secret)
         stub_request(:get, upstream_uri + upstream_path + "?token=#{token}").to_return(body: body)
         get "#{upstream_path}?token=#{token}"
       end
 
-      it "includes the decoded fact_check_id in the upstream request headers" do
+      it "includes the decoded auth_bypass_id in the upstream request headers" do
         expect(WebMock).to have_requested(:get, upstream_uri + upstream_path + "?token=#{token}").
-          with(headers: { 'Govuk-Fact-Check-Id' => fact_check_id })
+          with(headers: { 'Govuk-Auth-Bypass-Id' => auth_bypass_id })
       end
 
       it "does not redirect the user for authentication" do
@@ -44,7 +44,7 @@ RSpec.describe "Proxying requests", type: :request do
       end
 
       context "with an invalid token" do
-        let(:token) { JWT.encode({ 'sub' => fact_check_id }, 'invalid', 'HS256') }
+        let(:token) { JWT.encode({ 'sub' => auth_bypass_id }, 'invalid', 'HS256') }
         it "redirects the user for authentication" do
           get upstream_path
 
