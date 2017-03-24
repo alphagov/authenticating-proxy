@@ -60,7 +60,7 @@ private
 
   def process_token(token, env)
     payload, header = JWT.decode(token, jwt_auth_secret, true, { algorithm: 'HS256' })
-    env['HTTP_GOVUK_FACT_CHECK_ID'] = payload['sub'] if payload.key?('sub')
+    env['HTTP_GOVUK_AUTH_BYPASS_ID'] = payload['sub'] if payload.key?('sub')
   rescue JWT::DecodeError
   end
 
