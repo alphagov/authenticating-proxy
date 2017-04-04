@@ -1,6 +1,10 @@
-# authenticating-proxy
+# GOV.UK Authenticating Proxy
 
-An authenticating proxy application that proxies requests to an upstream service.
+App to add authentication to the draft version of GOV.UK, so that only users with a [signon][] account can access it.
+
+Some of the thinking behind this is [documented in RFC 13][rfc].
+
+[rfc]: https://github.com/alphagov/govuk-rfcs/blob/master/rfc-013-thoughts-on-access-limiting-in-draft.md
 
 ## Live examples
 
@@ -9,9 +13,9 @@ An authenticating proxy application that proxies requests to an upstream service
 ## Nomenclature
 
 - **`X-GOVUK-AUTHENTICATED-USER`**: The HTTP header which contains the UID of
-  the authenticated user (as reported by signonotron).
+  the authenticated user (as reported by Signon).
 - **upstream service**: The destination service that the app is proxying to.
-- **signonotron**: Single signon service for GOV.UK authentication.
+- **Signon**: Single signon service for GOV.UK authentication.
 - **`GOVUK_UPSTREAM_URI`**: environment variable used to specify the upstream
   site.
 - **`GOVUK_AUTH_BYPASS_ID`**: The HTTP header which contains the UUID of a auth
@@ -37,7 +41,7 @@ valid; this will be done by content-store.
 
 - [alphagov/gds-sso](http://github.com/alphagov/gds-sso) - provides
   authentication against the GOV.UK single-signon application,
-  [signonotron](https://github.com/alphagov/signonotron2)
+  [signon][]
 - [rack-proxy](https://github.com/ncr/rack-proxy) - rack middleware used to
   proxy requests through to the upstream service.
 
@@ -91,3 +95,5 @@ where `auth_bypass_id` is the UUID for the auth bypass of the content item, and
 ## Licence
 
 [MIT License](LICENCE)
+
+[signon]: https://github.com/alphagov/signon
