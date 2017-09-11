@@ -39,9 +39,6 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     addressable (2.4.0)
-    airbrake (5.5.0)
-      airbrake-ruby (~> 1.5)
-    airbrake-ruby (1.5.0)
     arel (7.1.2)
     bson (4.1.1)
     builder (3.2.2)
@@ -64,6 +61,9 @@ GEM
       warden-oauth2 (~> 0.0.1)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
+    govuk_app_config (0.2.0)
+      sentry-raven (~> 2.6.3)
+      statsd-ruby (~> 1.4.0)
     hashdiff (0.3.0)
     hashie (3.4.6)
     i18n (0.7.0)
@@ -161,6 +161,8 @@ GEM
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
     safe_yaml (1.0.4)
+    sentry-raven (2.6.3)
+      faraday (>= 0.7.6, < 1.0)
     simplecov (0.8.2)
       docile (~> 1.1.0)
       multi_json
@@ -175,6 +177,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    statsd-ruby (1.4.0)
     thor (0.19.1)
     thread_safe (0.3.5)
     tzinfo (1.2.2)
@@ -199,10 +202,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  airbrake (~> 5.5)
-  airbrake-ruby (= 1.5)
   byebug
   gds-sso (~> 13.0.0)
+  govuk_app_config (~> 0.2.0)
   logstasher (= 0.6.5)
   mongoid (= 6.0.0)
   plek (~> 1.10)
@@ -216,4 +218,4 @@ DEPENDENCIES
   webmock (= 2.1.0)
 
 BUNDLED WITH
-   1.11.2
+   1.13.7
