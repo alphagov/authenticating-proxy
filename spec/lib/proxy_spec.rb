@@ -16,17 +16,19 @@ RSpec.describe Proxy do
   let(:request_env) { Rack::MockRequest.env_for(upstream_path) }
   let(:proxy_app) { Proxy.new(inner_app, upstream_uri) }
 
-  before do
-    stub_request(:get, upstream_uri + upstream_path).
-      to_return(body: upstream_body, status: 200, headers: upstream_headers)
-  end
-
   it 'passes Rack::Lint checks' do
-    lint_app = Rack::Lint.new(Proxy.new(inner_app, upstream_uri))
+    allow(proxy_app).to receive(:perform_request)
+      .and_return([200, {"Content-Type" => "text/html; charset=UTF-8"}, ["hello"]])
+
+    lint_app = Rack::Lint.new(proxy_app)
+
     lint_app.call(request_env)
   end
 
   it 'returns the response from the upstream URI' do
+    allow(proxy_app).to receive(:perform_request)
+      .and_return([200, {"Content-Type" => "text/html; charset=UTF-8"}, ["hello"]])
+
     status, headers, body = proxy_app.call(request_env)
 
     expect(body).to eq([upstream_body])
