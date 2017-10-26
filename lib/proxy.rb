@@ -37,9 +37,8 @@ class Proxy < Rack::Proxy
 
     [
       status,
-      # We aren't returning a chunked response so remove that from the headers.
-      # Also, status doesn't belong in the headers in a rack response triplet.
-      headers.reject { |key, _| %w(status transfer-encoding).include?(key) },
+      # Status doesn't belong in the headers in a rack response triplet.
+      headers.reject { |key, _| %w(status).include?(key) },
       body
     ]
   end
