@@ -112,8 +112,8 @@ GEM
       omniauth (~> 1.2)
     pkg-config (1.1.7)
     plek (1.12.0)
-    rack (2.0.1)
-    rack-proxy (0.6.0)
+    rack (2.0.3)
+    rack-proxy (0.6.2)
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -208,7 +208,7 @@ DEPENDENCIES
   logstasher (= 0.6.5)
   mongoid (= 6.0.0)
   plek (~> 1.10)
-  rack-proxy (= 0.6.0)
+  rack-proxy (~> 0.6.0)
   rack-test (= 0.6.3)
   rails (= 5.0.0.1)
   rspec-rails (= 3.5.2)
@@ -218,4 +218,4 @@ DEPENDENCIES
   webmock (= 2.1.0)
 
 BUNDLED WITH
-   1.13.7
+   1.15.1
