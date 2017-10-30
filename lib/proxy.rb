@@ -5,7 +5,7 @@ class Proxy < Rack::Proxy
 
   def initialize(app, upstream_url)
     @upstream_url = URI(upstream_url)
-    super(app, backend: upstream_url, streaming: false)
+    super(app, backend: upstream_url)
   end
 
   def call(env)
@@ -37,9 +37,8 @@ class Proxy < Rack::Proxy
 
     [
       status,
-      # We aren't returning a chunked response so remove that from the headers.
-      # Also, status doesn't belong in the headers in a rack response triplet.
-      headers.reject { |key, _| %w(status transfer-encoding).include?(key) },
+      # Status doesn't belong in the headers in a rack response triplet.
+      headers.reject { |key, _| key == "status" },
       body
     ]
   end

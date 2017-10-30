@@ -38,14 +38,11 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    addressable (2.4.0)
     arel (7.1.2)
     bson (4.1.1)
     builder (3.2.2)
     byebug (9.0.6)
     concurrent-ruby (1.0.2)
-    crack (0.4.3)
-      safe_yaml (~> 1.0.0)
     diff-lcs (1.2.5)
     docile (1.1.5)
     erubis (2.7.0)
@@ -64,7 +61,6 @@ GEM
     govuk_app_config (0.2.0)
       sentry-raven (~> 2.6.3)
       statsd-ruby (~> 1.4.0)
-    hashdiff (0.3.0)
     hashie (3.4.6)
     i18n (0.7.0)
     jwt (1.5.6)
@@ -160,7 +156,6 @@ GEM
       rspec-mocks (~> 3.5.0)
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
-    safe_yaml (1.0.4)
     sentry-raven (2.6.3)
       faraday (>= 0.7.6, < 1.0)
     simplecov (0.8.2)
@@ -190,10 +185,6 @@ GEM
       rack (>= 1.0)
     warden-oauth2 (0.0.1)
       warden
-    webmock (2.1.0)
-      addressable (>= 2.3.6)
-      crack (>= 0.3.2)
-      hashdiff
     websocket-driver (0.6.4)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
@@ -215,7 +206,6 @@ DEPENDENCIES
   simplecov (= 0.8.2)
   simplecov-rcov (= 0.2.3)
   unicorn (= 4.9.0)
-  webmock (= 2.1.0)
 
 BUNDLED WITH
-   1.13.7
+   1.15.1
