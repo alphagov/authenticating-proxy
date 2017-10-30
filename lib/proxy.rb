@@ -35,11 +35,12 @@ class Proxy < Rack::Proxy
   def rewrite_response(response)
     status, headers, body = response
 
+    fix_content_length(headers, body)
+
     [
       status,
-      # We aren't returning a chunked response so remove that from the headers.
-      # Also, status doesn't belong in the headers in a rack response triplet.
-      headers.reject { |key, _| %w(status transfer-encoding).include?(key) },
+      # Status doesn't belong in the headers in a rack response triplet.
+      headers.reject { |key, _| %w(status).include?(key) },
       body
     ]
   end
@@ -89,5 +90,21 @@ private
 
   def debug_logging(env, message)
     env['action_dispatch.logger'] and env['action_dispatch.logger'].debug message
+  end
+
+  # Content-Length header can end up with an incorrect value as Net::HTTP will
+  # decompress a body of a gzipped request but pass throguh the Content-Length
+  # header of the compressed content.
+  def fix_content_length(headers, body)
+    content_length_header = headers.keys.find { |k| k.downcase == "content-length" }
+    return unless content_length_header
+
+    if body.all? { |b| b.respond_to?(:bytesize) }
+      bytesize = body.map(&:bytesize).sum
+      headers[content_length_header] = bytesize.to_s
+    else
+      headers.delete(content_length_header)
+    end
+    bytesize = body.map(&:bytesize)
   end
 end

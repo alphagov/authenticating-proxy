@@ -37,4 +37,14 @@ RSpec.describe Proxy do
 
     expect(body).to eq(['Rails App'])
   end
+
+  describe "#rewrite_response" do
+    let(:status) { 200 }
+    let(:body) { ["1234 1234 1234 1234"] }
+    let(:response) { [status, { "Content-Length" => "5" }, body] }
+    it "corrects an incorrect content-length header" do
+      rewrote = proxy_app.rewrite_response(response)
+      expect(rewrote).to match([status, { "Content-Length" => "19" }, body])
+    end
+  end
 end
