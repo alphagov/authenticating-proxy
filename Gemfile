@@ -12,7 +12,7 @@ gem 'govuk_app_config', '~> 0.2.0'
 group :development, :test do
   gem 'rspec-rails', '3.5.2'
   gem 'rack-test', '0.6.3'
-  gem 'webmock', '2.1.0', require: false
+  gem 'webmock', '~> 2.3.0', require: false
   gem 'byebug'
   gem 'simplecov', '0.8.2', :require => false
   gem 'simplecov-rcov', '0.2.3', :require => false
