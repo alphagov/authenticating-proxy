@@ -63,7 +63,7 @@ GEM
       warden-oauth2 (~> 0.0.1)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
-    govuk_app_config (0.2.0)
+    govuk_app_config (0.3.0)
       sentry-raven (~> 2.6.3)
       statsd-ruby (~> 1.4.0)
     hashdiff (0.3.7)
@@ -206,7 +206,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   gds-sso (~> 13.0.0)
-  govuk_app_config (~> 0.2.0)
+  govuk_app_config (~> 0.3.0)
   logstasher (= 0.6.5)
   mongoid (= 6.0.0)
   plek (~> 1.10)
