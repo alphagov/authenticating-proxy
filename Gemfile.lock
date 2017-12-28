@@ -209,7 +209,6 @@ DEPENDENCIES
   byebug
   gds-sso (~> 13.5.0)
   govuk_app_config (~> 1.1)
-  logstasher (= 1.2.2)
   mongoid (= 6.2.1)
   plek (~> 2.0)
   rack-proxy (~> 0.6.3)
