@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '5.1.4'
-gem 'rack-proxy', '~> 0.6.0'
+gem 'rack-proxy', '~> 0.6.3'
 gem 'logstasher', '1.2.2'
 gem 'plek', '~> 2.0'
 gem 'unicorn', '5.4.0'
