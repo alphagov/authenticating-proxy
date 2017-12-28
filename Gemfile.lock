@@ -185,7 +185,7 @@ GEM
     thread_safe (0.3.6)
     tzinfo (1.2.4)
       thread_safe (~> 0.1)
-    unicorn (5.3.1)
+    unicorn (5.4.0)
       kgio (~> 2.6)
       raindrops (~> 0.7)
     warden (1.2.7)
@@ -216,7 +216,7 @@ DEPENDENCIES
   rspec-rails (= 3.7.2)
   simplecov (~> 0.15.1)
   simplecov-rcov (= 0.2.3)
-  unicorn (= 5.3.1)
+  unicorn (= 5.4.0)
   webmock (~> 3.1.1)
 
 BUNDLED WITH
