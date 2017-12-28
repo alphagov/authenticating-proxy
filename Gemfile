@@ -7,7 +7,7 @@ gem 'plek', '~> 2.0'
 gem 'unicorn', '5.4.0'
 gem 'mongoid', '6.2.1'
 gem 'gds-sso', '~> 13.5.0'
-gem 'govuk_app_config', '~> 0.2.0'
+gem 'govuk_app_config', '~> 0.3.0'
 
 group :development, :test do
   gem 'rspec-rails', '3.7.2'
