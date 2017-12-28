@@ -4,10 +4,9 @@ gem 'rails', '5.1.4'
 gem 'rack-proxy', '~> 0.6.3'
 gem 'logstasher', '1.2.2'
 gem 'plek', '~> 2.0'
-gem 'unicorn', '5.4.0'
 gem 'mongoid', '6.2.1'
 gem 'gds-sso', '~> 13.5.0'
-gem 'govuk_app_config', '~> 0.2.0'
+gem 'govuk_app_config', '~> 1.1'
 
 group :development, :test do
   gem 'rspec-rails', '3.7.2'
