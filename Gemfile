@@ -9,7 +9,7 @@ gem 'govuk_app_config', '~> 1.3'
 
 group :development, :test do
   gem 'rspec-rails', '3.7.2'
-  gem 'rack-test', '0.8.2'
+  gem 'rack-test', '0.8.3'
   gem 'webmock', '~> 3.3.0', require: false
   gem 'byebug'
   gem 'simplecov', '~> 0.15.1', :require => false
