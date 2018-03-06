@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '5.1.5'
-gem 'rack-proxy', '~> 0.6.3'
+gem 'rack-proxy', '~> 0.6.4'
 gem 'plek', '~> 2.1'
 gem 'mongoid', '6.2.1'
 gem 'gds-sso', '~> 13.6.0'
