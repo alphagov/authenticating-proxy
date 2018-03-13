@@ -5,7 +5,7 @@ gem 'rack-proxy', '~> 0.6.4'
 gem 'plek', '~> 2.1'
 gem 'mongoid', '6.2.1'
 gem 'gds-sso', '~> 13.6.0'
-gem 'govuk_app_config', '~> 1.3'
+gem 'govuk_app_config', '~> 1.4'
 
 group :development, :test do
   gem 'rspec-rails', '3.7.2'
