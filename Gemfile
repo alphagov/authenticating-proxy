@@ -12,6 +12,6 @@ group :development, :test do
   gem 'rack-test', '0.8.3'
   gem 'webmock', '~> 3.3.0', require: false
   gem 'byebug'
-  gem 'simplecov', '~> 0.15.1', :require => false
+  gem 'simplecov', '~> 0.16.0', :require => false
   gem 'simplecov-rcov', '0.2.3', :require => false
 end
