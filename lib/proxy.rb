@@ -35,6 +35,7 @@ class Proxy < Rack::Proxy
   def rewrite_response(response)
     status, headers, body = response
 
+    allow_iframing(headers)
     fix_content_length(headers, body)
 
     [
@@ -106,5 +107,9 @@ private
       headers.delete(content_length_header)
     end
     bytesize = body.map(&:bytesize)
+  end
+
+  def allow_iframing(headers)
+    headers.delete('X-Frame-Options')
   end
 end
