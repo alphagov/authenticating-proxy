@@ -19,6 +19,14 @@ RSpec.describe "Proxying requests", type: :request do
       expect(response["Location"]).to eq("http://www.example.com/auth/gds")
     end
 
+    it "allows iframing" do
+      stub_request(:get, upstream_uri + upstream_path).to_return(body: body, headers: { 'X-Frame-Options' => 'DENY' })
+
+      get upstream_path
+
+      expect(response.headers['X-Frame-Options']).to be_nil
+    end
+
     context "with a JWT token" do
       let(:jwt_auth_secret) { 'my$ecretK3y' }
       let(:auth_bypass_id) { SecureRandom.uuid }
