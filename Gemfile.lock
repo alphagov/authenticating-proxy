@@ -67,7 +67,7 @@ GEM
       warden-oauth2 (~> 0.0.1)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
-    govuk_app_config (1.7.0)
+    govuk_app_config (1.8.0)
       logstasher (~> 1.2.2)
       sentry-raven (~> 2.7.1)
       statsd-ruby (~> 1.4.0)
@@ -196,7 +196,7 @@ GEM
     thread_safe (0.3.6)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
-    unicorn (5.4.0)
+    unicorn (5.4.1)
       kgio (~> 2.6)
       raindrops (~> 0.7)
     warden (1.2.7)
@@ -217,7 +217,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   gds-sso (~> 13.6.0)
-  govuk_app_config (~> 1.7)
+  govuk_app_config (~> 1.8)
   mongoid (= 6.2.1)
   plek (~> 2.1)
   rack-proxy (~> 0.6.4)
