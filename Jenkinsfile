@@ -3,5 +3,9 @@
 library("govuk")
 
 node {
-  govuk.buildProject()
+  govuk.buildProject(
+    beforeTest: {
+      govuk.setEnvar("GOVUK_UPSTREAM_URI", "http://test.example.com")
+    },
+  )
 }
