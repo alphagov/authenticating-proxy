@@ -51,6 +51,17 @@ RSpec.describe "Proxying requests", type: :request do
         with(headers: { 'X-Govuk-Authenticated-User' => 'invalid' })
       end
 
+      it "sets a cookie with the auth bypass token" do
+        expect(response.cookies["auth_bypass_token"]).to eq(token)
+      end
+
+      it "sets the appropriate environment as the cookie domain" do
+        ENV["GOVUK_APP_DOMAIN_EXTERNAL"] = "integration.publishing.service.gov.uk"
+        get "#{upstream_path}?token=#{token}"
+        expect(response.headers["Set-Cookie"]).to match("domain=.integration.publishing.service.gov.uk")
+        ENV.delete("GOVUK_APP_DOMAIN_EXTERNAL")
+      end
+
       context "with an invalid token" do
         let(:token) { JWT.encode({ 'sub' => auth_bypass_id }, 'invalid', 'HS256') }
         it "redirects the user for authentication" do

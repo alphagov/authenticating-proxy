@@ -14,7 +14,7 @@ class Proxy < Rack::Proxy
     if proxy?(path)
       process_token_or_authenticate!(env)
       debug_logging(env, "Proxing request: #{path}")
-      super
+      set_auth_bypass_cookie(super, env)
     else
       debug_logging(env, "Request not being proxied: #{path}")
       @app.call(env)
@@ -58,6 +58,25 @@ private
       content_id = process_token(token, env)
     end
     authenticate!(env) unless content_id
+  end
+
+  def set_auth_bypass_cookie(response, env)
+    request = Rack::Request.new(env)
+    return response unless request.params['token']
+
+    # Override any existing token, we don't really care at this point if the
+    # token is valid that's up to the consuming app to validate
+    Rack::Utils.set_cookie_header!(
+      response[1],
+      'auth_bypass_token',
+      {
+        value: request.params['token'],
+        path: '/',
+        domain: '.' + Plek.new.external_domain,
+      }
+    )
+
+    response
   end
 
   def process_token(token, env)
