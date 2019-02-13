@@ -8,7 +8,7 @@ gem 'gds-sso', '~> 14.0.0'
 gem 'govuk_app_config', '~> 1.11'
 
 group :development, :test do
-  gem 'rspec-rails', '3.8.1'
+  gem 'rspec-rails', '3.8.2'
   gem 'rack-test', '1.1.0'
   gem 'webmock', '~> 3.5.1', require: false
   gem 'byebug'
