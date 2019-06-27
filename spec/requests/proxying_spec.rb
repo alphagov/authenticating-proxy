@@ -51,6 +51,11 @@ RSpec.describe "Proxying requests", type: :request do
         with(headers: { 'X-Govuk-Authenticated-User' => 'invalid' })
       end
 
+      it "marks the user organisation id as invalid in the upstream request headers" do
+      expect(WebMock).to have_requested(:get, upstream_uri + upstream_path + "?token=#{token}").
+        with(headers: { 'X-Govuk-Authenticated-User-Organisation' => 'invalid' })
+      end
+
       it "sets a cookie with the auth bypass token" do
         expect(response.cookies["auth_bypass_token"]).to eq(token)
       end
@@ -86,6 +91,7 @@ RSpec.describe "Proxying requests", type: :request do
 
   context "authenticated user" do
     let(:authenticated_user_uid) { User.first.uid }
+    let(:authenticated_org_content_id) { User.first.organisation_content_id }
     before do
       stub_request(:get, upstream_uri + upstream_path).to_return(body: body)
       get upstream_path
@@ -98,6 +104,11 @@ RSpec.describe "Proxying requests", type: :request do
     it "includes the user's UID in the upstream request headers" do
       expect(WebMock).to have_requested(:get, upstream_uri + upstream_path).
         with(headers: { 'X-Govuk-Authenticated-User' => authenticated_user_uid })
+    end
+
+    it "includes the user's organisation content-id in the upstream request headers" do
+      expect(WebMock).to have_requested(:get, upstream_uri + upstream_path).
+        with(headers: { 'X-Govuk-Authenticated-User-Organisation' => authenticated_org_content_id })
     end
   end
 end
