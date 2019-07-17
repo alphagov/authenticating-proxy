@@ -6,6 +6,7 @@ gem 'plek', '~> 3.0'
 gem 'mongoid', '6.2.1'
 gem 'gds-sso', '~> 14.0.0'
 gem 'govuk_app_config', '~> 1.20'
+gem 'omniauth-rails_csrf_protection', '~> 0.1.2'
 
 group :development, :test do
   gem 'rspec-rails', '3.8.2'
