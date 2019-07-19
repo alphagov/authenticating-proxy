@@ -29,6 +29,7 @@ class Proxy < Rack::Proxy
     # Proxying hangs in the VM unless the host header is explicitly overridden here.
     env['HTTP_HOST'] = upstream_url.host
     add_authenticated_user_header(env)
+    add_authenticated_user_organisation_header(env)
     env
   end
 
@@ -98,6 +99,14 @@ private
                                              else
                                                'invalid'
                                              end
+  end
+
+  def add_authenticated_user_organisation_header(env)
+    env['HTTP_X_GOVUK_AUTHENTICATED_USER_ORGANISATION'] = if env['warden'] && env['warden'].user
+                                                            env['warden'].user.organisation_content_id.to_s
+                                                          else
+                                                            'invalid'
+                                                          end
   end
 
   def healthcheck_path?(path)
