@@ -59,7 +59,7 @@ GEM
     erubi (1.8.0)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
-    gds-sso (14.1.0)
+    gds-sso (14.1.1)
       multi_json (~> 1.0)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
@@ -220,7 +220,7 @@ PLATFORMS
 
 DEPENDENCIES
   byebug
-  gds-sso (~> 14.1.0)
+  gds-sso (~> 14.1.1)
   govuk_app_config (~> 1.20)
   mongoid (= 6.2.1)
   plek (~> 3.0)
