@@ -28,7 +28,7 @@ performing authentication using `gds-sso` to ensure that only authenticated
 users are able to view the site. It sets an `X-GOVUK-AUTHENTICATED-USER` header
 so that the upstream service can identify the user.
 
-The application also supports bypassing authentication via a valid JWT token.
+The application also supports bypassing authentication via a valid JSON web token ([JWT]).
 If the URL being requested includes a `token` querystring containing a valid
 token encoded with the value in the `JWT_AUTH_SECRET` environment variable, and
 that token contains a `sub` key, the value of that key is passed upstream in
@@ -36,6 +36,8 @@ the `GOVUK_AUTH_BYPASS_ID` header and authentication is not performed.
 
 Authenticating-proxy does not itself check that the auth_bypass_id is actually
 valid; this will be done by content-store.
+
+[JWT]: https://jwt.io/
 
 ### Dependencies
 
