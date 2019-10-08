@@ -33,11 +33,13 @@ If the URL being requested includes a `token` querystring containing a valid
 token encoded with the value in the `JWT_AUTH_SECRET` environment variable, and
 that token contains a `sub` key, the value of that key is passed upstream in
 the `GOVUK_AUTH_BYPASS_ID` header and authentication is not performed.
+NB, the `sub` (or "subject") key is one of the [reserved claims of a JWT][].
 
 Authenticating-proxy does not itself check that the auth_bypass_id is actually
 valid; this will be done by content-store.
 
 [JWT]: https://jwt.io/
+[reserved claims of a JWT]: https://auth0.com/docs/tokens/jwt-claims#reserved-claims
 
 ### Dependencies
 
