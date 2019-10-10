@@ -90,11 +90,37 @@ They can then use the JWT library - which will probably already be present, sinc
 is a dependency of gds-sso via oauth2 - to encode a token as follows:
 
 ```
-JWT.encode({ 'sub' => auth_bypass_id }, jwt_auth_secret, 'HS256')
+JWT.encode({
+  "sub" => auth_bypass_id,
+  "iss" => current_user.uid,
+  "iat" => Time.zone.now.to_i,
+  "exp" => 1.month.from_now.to_i,
+}, ENV['JWT_AUTH_SECRET'], 'HS256')
 ```
 
-where `auth_bypass_id` is the UUID for the auth bypass of the content item, and
-`jwt_auth_secret` is the secret supplied in the environment variable.
+Where:
+
+- `sub` value of `auth_bypass_id` is the UUID for the auth bypass of the content item
+- `iss` ("issuer") is the unique ID of the user who created the token
+- `iat` ("issued at") is the time at which the token was created
+- `exp` ("expiration time") is when the token should expire and no longer be valid
+
+These fields are [registered claim names][] in the JWT specification. Providing
+them is recommended as they help to audit when and how the token was created and when
+it should expire.
+
+[registered claim names]: https://tools.ietf.org/html/rfc7519#section-4.1
+
+#### Optional special fields
+
+In addition to the JWT standard fields, you can encode arbitrary fields which might
+only have meaning for your application. For example, it is recommended that you store
+some information that describes the piece of content associated with the JWT token (such
+as a content ID).
+
+```
+  "content_id" => step_by_step.content_id
+```
 
 ## Licence
 
