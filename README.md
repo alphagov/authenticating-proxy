@@ -1,9 +1,11 @@
 # GOV.UK Authenticating Proxy
 
-App to add authentication to the draft version of GOV.UK, so that only users with a [signon][] account can access it.
+App to add authentication to the draft version of GOV.UK, so that only users with
+a [signon][] account - or a valid JSON web token ([JWT]) - can access it.
 
 Some of the thinking behind this is [documented in RFC 13][rfc].
 
+[JWT]: https://jwt.io/
 [rfc]: https://github.com/alphagov/govuk-rfcs/blob/master/rfc-013-thoughts-on-access-limiting-in-draft.md
 
 ## Live examples
@@ -28,17 +30,20 @@ performing authentication using `gds-sso` to ensure that only authenticated
 users are able to view the site. It sets an `X-GOVUK-AUTHENTICATED-USER` header
 so that the upstream service can identify the user.
 
-The application also supports bypassing authentication via a valid JSON web token ([JWT]).
+The application also supports bypassing authentication via a valid JWT token.
 If the URL being requested includes a `token` querystring containing a valid
 token encoded with the value in the `JWT_AUTH_SECRET` environment variable, and
 that token contains a `sub` key, the value of that key is passed upstream in
-the `GOVUK_AUTH_BYPASS_ID` header and authentication is not performed.
-NB, the `sub` (or "subject") key is one of the [reserved claims of a JWT][].
+the `GOVUK_AUTH_BYPASS_ID` header. NB, the `sub` (or "subject") key is one of the
+[reserved claims of a JWT][].
+
+If a user is authenticated using `gds-sso` and a JWT token is also provided, both
+sets of information are passed upstream. It is up to the upstream application how
+to handle these cases.
 
 Authenticating-proxy does not itself check that the auth_bypass_id is actually
 valid; this will be done by content-store.
 
-[JWT]: https://jwt.io/
 [reserved claims of a JWT]: https://auth0.com/docs/tokens/jwt-claims#reserved-claims
 
 ### Dependencies
