@@ -56,9 +56,9 @@ private
   def process_token_or_authenticate!(env)
     request = Rack::Request.new(env)
     if token = request.params['token']
-      content_id = process_token(token, env)
+      auth_bypass_id = process_token(token, env)
     end
-    authenticate!(env) unless content_id
+    authenticate!(env) unless auth_bypass_id
   end
 
   def set_auth_bypass_cookie(response, env)
