@@ -4,6 +4,11 @@ RSpec.describe "Proxying requests", type: :request do
   let(:body) { "abc" }
   let(:upstream_path) { "/foo" }
   let(:upstream_uri) { ENV['GOVUK_UPSTREAM_URI'] }
+  let(:jwt_auth_secret) { 'my$ecretK3y' }
+  let(:auth_bypass_id) { SecureRandom.uuid }
+  let(:token) { JWT.encode({ 'sub' => auth_bypass_id }, jwt_auth_secret, 'HS256') }
+  let(:authenticated_user_uid) { User.first.uid }
+  let(:authenticated_org_content_id) { User.first.organisation_content_id }
 
   shared_examples "sets auth-bypass token cookie" do
     it "sets the appropriate environment as the cookie domain" do
@@ -35,9 +40,6 @@ RSpec.describe "Proxying requests", type: :request do
     end
 
     context "with a JWT token" do
-      let(:jwt_auth_secret) { 'my$ecretK3y' }
-      let(:auth_bypass_id) { SecureRandom.uuid }
-      let(:token) { JWT.encode({ 'sub' => auth_bypass_id }, jwt_auth_secret, 'HS256') }
       before do
         allow_any_instance_of(Proxy).to receive(:jwt_auth_secret).and_return(jwt_auth_secret)
         stub_request(:get, upstream_uri + upstream_path + "?token=#{token}").to_return(body: body)
@@ -92,8 +94,6 @@ RSpec.describe "Proxying requests", type: :request do
   end
 
   context "authenticated user" do
-    let(:authenticated_user_uid) { User.first.uid }
-    let(:authenticated_org_content_id) { User.first.organisation_content_id }
     before do
       stub_request(:get, upstream_uri + upstream_path).to_return(body: body)
       get upstream_path
@@ -115,11 +115,6 @@ RSpec.describe "Proxying requests", type: :request do
   end
 
   context "authenticated user with a valid JWT token" do
-    let(:authenticated_user_uid) { User.first.uid }
-    let(:authenticated_org_content_id) { User.first.organisation_content_id }
-    let(:jwt_auth_secret) { 'my$ecretK3y' }
-    let(:auth_bypass_id) { SecureRandom.uuid }
-    let(:token) { JWT.encode({ 'sub' => auth_bypass_id }, jwt_auth_secret, 'HS256') }
     let(:upstream_uri_with_token) { "#{upstream_uri}#{upstream_path}?token=#{token}" }
 
     before do
@@ -159,10 +154,6 @@ RSpec.describe "Proxying requests", type: :request do
   end
 
   context "authenticated user with an invalid JWT token" do
-    let(:authenticated_user_uid) { User.first.uid }
-    let(:authenticated_org_content_id) { User.first.organisation_content_id }
-    let(:auth_bypass_id) { SecureRandom.uuid }
-    let(:jwt_auth_secret) { 'my$ecretK3y' }
     let(:token) { JWT.encode({ 'sub' => auth_bypass_id }, 'invalid', 'HS256') }
     let(:upstream_uri_with_token) { "#{upstream_uri}#{upstream_path}?token=#{token}" }
 
