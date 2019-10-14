@@ -70,7 +70,7 @@ RSpec.describe "Proxying requests", type: :request do
       context "with an invalid token" do
         let(:token) { JWT.encode({ 'sub' => auth_bypass_id }, 'invalid', 'HS256') }
         it "redirects the user for authentication" do
-          get upstream_path
+          get "#{upstream_path}?token=#{token}"
 
           expect(response.status).to eq(302)
           expect(response["Location"]).to eq("http://www.example.com/auth/gds")
@@ -80,7 +80,7 @@ RSpec.describe "Proxying requests", type: :request do
       context "with a token that is valid but doesn't contain the right key" do
         let(:token) { JWT.encode({ 'foo' => 'bar' }, 'invalid', 'HS256') }
         it "redirects the user for authentication" do
-          get upstream_path
+          get "#{upstream_path}?token=#{token}"
 
           expect(response.status).to eq(302)
           expect(response["Location"]).to eq("http://www.example.com/auth/gds")
