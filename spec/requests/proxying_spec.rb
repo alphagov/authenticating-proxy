@@ -5,6 +5,15 @@ RSpec.describe "Proxying requests", type: :request do
   let(:upstream_path) { "/foo" }
   let(:upstream_uri) { ENV['GOVUK_UPSTREAM_URI'] }
 
+  shared_examples "sets auth-bypass token cookie" do
+    it "sets the appropriate environment as the cookie domain" do
+      ENV["GOVUK_APP_DOMAIN_EXTERNAL"] = "integration.publishing.service.gov.uk"
+      get "#{upstream_path}?token=#{token}"
+      expect(response.headers["Set-Cookie"]).to match("domain=.integration.publishing.service.gov.uk")
+      ENV.delete("GOVUK_APP_DOMAIN_EXTERNAL")
+    end
+  end
+
   context "unauthenticated user" do
     around do |example|
       ENV['GDS_SSO_MOCK_INVALID'] = '§1'
@@ -58,12 +67,7 @@ RSpec.describe "Proxying requests", type: :request do
         expect(response.cookies["auth_bypass_token"]).to eq(token)
       end
 
-      it "sets the appropriate environment as the cookie domain" do
-        ENV["GOVUK_APP_DOMAIN_EXTERNAL"] = "integration.publishing.service.gov.uk"
-        get "#{upstream_path}?token=#{token}"
-        expect(response.headers["Set-Cookie"]).to match("domain=.integration.publishing.service.gov.uk")
-        ENV.delete("GOVUK_APP_DOMAIN_EXTERNAL")
-      end
+      include_examples "sets auth-bypass token cookie"
 
       context "with an invalid token" do
         let(:token) { JWT.encode({ 'sub' => auth_bypass_id }, 'invalid', 'HS256') }
@@ -151,12 +155,7 @@ RSpec.describe "Proxying requests", type: :request do
       expect(response.cookies["auth_bypass_token"]).to eq(token)
     end
 
-    it "sets the appropriate environment as the cookie domain" do
-      ENV["GOVUK_APP_DOMAIN_EXTERNAL"] = "integration.publishing.service.gov.uk"
-      get "#{upstream_path}?token=#{token}"
-      expect(response.headers["Set-Cookie"]).to match("domain=.integration.publishing.service.gov.uk")
-      ENV.delete("GOVUK_APP_DOMAIN_EXTERNAL")
-    end
+    include_examples "sets auth-bypass token cookie"
   end
 
   context "authenticated user with an invalid JWT token" do
@@ -195,11 +194,6 @@ RSpec.describe "Proxying requests", type: :request do
       expect(response.cookies["auth_bypass_token"]).to eq(token)
     end
 
-    it "sets the appropriate environment as the cookie domain" do
-      ENV["GOVUK_APP_DOMAIN_EXTERNAL"] = "integration.publishing.service.gov.uk"
-      get "#{upstream_path}?token=#{token}"
-      expect(response.headers["Set-Cookie"]).to match("domain=.integration.publishing.service.gov.uk")
-      ENV.delete("GOVUK_APP_DOMAIN_EXTERNAL")
-    end
+    include_examples "sets auth-bypass token cookie"
   end
 end
