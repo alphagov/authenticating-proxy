@@ -46,6 +46,7 @@ RSpec.describe Proxy do
 
   def stub_warden_authentication
     request_env["warden"] = double(
+      authenticate: stub_user,
       authenticate!: stub_user,
       user: stub_user,
     )

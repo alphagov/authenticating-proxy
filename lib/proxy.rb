@@ -58,7 +58,8 @@ private
     if token = request.params['token']
       auth_bypass_id = process_token(token, env)
     end
-    authenticate!(env) unless auth_bypass_id
+    user = auth_bypass_id ? env['warden'].authenticate : env['warden'].authenticate!
+    debug_logging(env, "authenticated as #{user.email}") if user
   end
 
   def set_auth_bypass_cookie(response, env)
