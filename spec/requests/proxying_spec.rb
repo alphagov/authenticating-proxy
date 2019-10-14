@@ -20,8 +20,6 @@ RSpec.describe "Proxying requests", type: :request do
     end
 
     it "allows iframing" do
-      stub_request(:get, upstream_uri + upstream_path).to_return(body: body, headers: { 'X-Frame-Options' => 'DENY' })
-
       get upstream_path
 
       expect(response.headers['X-Frame-Options']).to be_nil
