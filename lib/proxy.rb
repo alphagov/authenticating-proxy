@@ -87,14 +87,12 @@ private
   end
 
   def authenticate!(env)
-    if env['warden']
-      user = env['warden'].authenticate!
-      debug_logging(env, "authenticated as #{user.email}")
-    end
+    user = env['warden'].authenticate!
+    debug_logging(env, "authenticated as #{user.email}")
   end
 
   def add_authenticated_user_header(env)
-    env['HTTP_X_GOVUK_AUTHENTICATED_USER'] = if env['warden'] && env['warden'].user
+    env['HTTP_X_GOVUK_AUTHENTICATED_USER'] = if env['warden'].user
                                                env['warden'].user.uid.to_s
                                              else
                                                'invalid'
@@ -102,7 +100,7 @@ private
   end
 
   def add_authenticated_user_organisation_header(env)
-    env['HTTP_X_GOVUK_AUTHENTICATED_USER_ORGANISATION'] = if env['warden'] && env['warden'].user
+    env['HTTP_X_GOVUK_AUTHENTICATED_USER_ORGANISATION'] = if env['warden'].user
                                                             env['warden'].user.organisation_content_id.to_s
                                                           else
                                                             'invalid'
