@@ -84,6 +84,19 @@ RSpec.describe "Proxying requests", type: :request do
         end
       end
 
+      context "with a token that is rejected by the service" do
+        it "redirects the user for authentication" do
+          stub_request(:get, upstream_uri + upstream_path + "?token=#{token}").to_return(body: body, status: 403)
+          get "#{upstream_path}?token=#{token}"
+
+          expect(response.status).to eq(302)
+          # TODO - currently fails because:
+          #   expected: "http://www.example.com/auth/gds"
+          #   got: "http://upstream-host.com/auth/gds"
+          expect(response["Location"]).to eq("http://www.example.com/auth/gds")
+        end
+      end
+
       context "with a token that is valid but doesn't contain the right key" do
         let(:token) { JWT.encode({ 'foo' => 'bar' }, jwt_auth_secret, 'HS256') }
         it "redirects the user for authentication" do

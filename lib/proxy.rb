@@ -14,7 +14,11 @@ class Proxy < Rack::Proxy
     if proxy?(path)
       process_token_or_authenticate!(env)
       debug_logging(env, "Proxing request: #{path}")
-      set_auth_bypass_cookie(super, env)
+      super.tap do |response|
+        set_auth_bypass_cookie(response, env)
+        token_rejected = forbidden_response?(response) && !gds_sso_path?(path)
+        env["warden"].authenticate! if token_rejected
+      end
     else
       debug_logging(env, "Request not being proxied: #{path}")
       @app.call(env)
@@ -84,6 +88,10 @@ private
     )
 
     response
+  end
+
+  def forbidden_response?(response)
+    response[0] == "403"
   end
 
   def process_token(token, env)
