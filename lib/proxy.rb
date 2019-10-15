@@ -92,11 +92,6 @@ private
   rescue JWT::DecodeError
   end
 
-  def authenticate!(env)
-    user = env['warden'].authenticate!
-    debug_logging(env, "authenticated as #{user.email}")
-  end
-
   def add_authenticated_user_header(env)
     env['HTTP_X_GOVUK_AUTHENTICATED_USER'] = if env['warden'].user
                                                env['warden'].user.uid.to_s
