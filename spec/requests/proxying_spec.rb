@@ -10,6 +10,10 @@ RSpec.describe "Proxying requests", type: :request do
   let(:authenticated_user_uid) { User.first.uid }
   let(:authenticated_org_content_id) { User.first.organisation_content_id }
 
+  before do
+    allow_any_instance_of(Proxy).to receive(:jwt_auth_secret).and_return(jwt_auth_secret)
+  end
+
   shared_examples "sets auth-bypass token cookie" do
     it "sets the appropriate environment as the cookie domain" do
       ENV["GOVUK_APP_DOMAIN_EXTERNAL"] = "integration.publishing.service.gov.uk"
@@ -41,7 +45,6 @@ RSpec.describe "Proxying requests", type: :request do
 
     context "with a JWT token in URL query string" do
       before do
-        allow_any_instance_of(Proxy).to receive(:jwt_auth_secret).and_return(jwt_auth_secret)
         stub_request(:get, upstream_uri + upstream_path + "?token=#{token}").to_return(body: body)
         get "#{upstream_path}?token=#{token}"
       end
@@ -96,7 +99,6 @@ RSpec.describe "Proxying requests", type: :request do
       let(:cookie) { "auth_bypass_token=#{token}; Path=/; Domain=#{'.' + upstream_uri}" }
 
       before do
-        allow_any_instance_of(Proxy).to receive(:jwt_auth_secret).and_return(jwt_auth_secret)
         stub_request(:get, upstream_uri + upstream_path).to_return(body: body)
         get upstream_path, headers: { Cookie: cookie }
       end
@@ -147,7 +149,6 @@ RSpec.describe "Proxying requests", type: :request do
     let(:upstream_uri_with_token) { "#{upstream_uri}#{upstream_path}?token=#{token}" }
 
     before do
-      allow_any_instance_of(Proxy).to receive(:jwt_auth_secret).and_return(jwt_auth_secret)
       stub_request(:get, upstream_uri_with_token).to_return(body: body)
       get "#{upstream_path}?token=#{token}"
     end
@@ -187,7 +188,6 @@ RSpec.describe "Proxying requests", type: :request do
     let(:upstream_uri_with_token) { "#{upstream_uri}#{upstream_path}?token=#{token}" }
 
     before do
-      allow_any_instance_of(Proxy).to receive(:jwt_auth_secret).and_return(jwt_auth_secret)
       stub_request(:get, upstream_uri_with_token).to_return(body: body)
       get "#{upstream_path}?token=#{token}"
     end
