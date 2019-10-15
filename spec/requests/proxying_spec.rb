@@ -10,6 +10,10 @@ RSpec.describe "Proxying requests", type: :request do
   let(:authenticated_user_uid) { User.first.uid }
   let(:authenticated_org_content_id) { User.first.organisation_content_id }
 
+  before do
+    allow_any_instance_of(Proxy).to receive(:jwt_auth_secret).and_return(jwt_auth_secret)
+  end
+
   shared_examples "sets auth-bypass token cookie" do
     it "sets the appropriate environment as the cookie domain" do
       ENV["GOVUK_APP_DOMAIN_EXTERNAL"] = "integration.publishing.service.gov.uk"
@@ -39,9 +43,8 @@ RSpec.describe "Proxying requests", type: :request do
       expect(response.headers['X-Frame-Options']).to be_nil
     end
 
-    context "with a JWT token" do
+    context "with a JWT token in URL query string" do
       before do
-        allow_any_instance_of(Proxy).to receive(:jwt_auth_secret).and_return(jwt_auth_secret)
         stub_request(:get, upstream_uri + upstream_path + "?token=#{token}").to_return(body: body)
         get "#{upstream_path}?token=#{token}"
       end
@@ -91,6 +94,34 @@ RSpec.describe "Proxying requests", type: :request do
         end
       end
     end
+
+    context "with a JWT token in a cookie" do
+      let(:cookie) { "auth_bypass_token=#{token}; Path=/; Domain=#{'.' + upstream_uri}" }
+
+      before do
+        stub_request(:get, upstream_uri + upstream_path).to_return(body: body)
+        get upstream_path, headers: { Cookie: cookie }
+      end
+
+      it "includes the decoded auth_bypass_id in the upstream request headers" do
+        expect(WebMock).to have_requested(:get, upstream_uri + upstream_path).
+          with(headers: { 'Govuk-Auth-Bypass-Id' => auth_bypass_id })
+      end
+
+      it "does not redirect the user for authentication" do
+        expect(response.status).to eq(200)
+      end
+
+      it "marks the user id as invalid in the upstream request headers" do
+        expect(WebMock).to have_requested(:get, upstream_uri + upstream_path).
+          with(headers: { 'X-Govuk-Authenticated-User' => 'invalid' })
+      end
+
+      it "marks the user organisation id as invalid in the upstream request headers" do
+        expect(WebMock).to have_requested(:get, upstream_uri + upstream_path).
+          with(headers: { 'X-Govuk-Authenticated-User-Organisation' => 'invalid' })
+      end
+    end
   end
 
   context "authenticated user" do
@@ -118,7 +149,6 @@ RSpec.describe "Proxying requests", type: :request do
     let(:upstream_uri_with_token) { "#{upstream_uri}#{upstream_path}?token=#{token}" }
 
     before do
-      allow_any_instance_of(Proxy).to receive(:jwt_auth_secret).and_return(jwt_auth_secret)
       stub_request(:get, upstream_uri_with_token).to_return(body: body)
       get "#{upstream_path}?token=#{token}"
     end
@@ -158,7 +188,6 @@ RSpec.describe "Proxying requests", type: :request do
     let(:upstream_uri_with_token) { "#{upstream_uri}#{upstream_path}?token=#{token}" }
 
     before do
-      allow_any_instance_of(Proxy).to receive(:jwt_auth_secret).and_return(jwt_auth_secret)
       stub_request(:get, upstream_uri_with_token).to_return(body: body)
       get "#{upstream_path}?token=#{token}"
     end

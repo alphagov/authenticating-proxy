@@ -55,11 +55,16 @@ private
 
   def process_token_or_authenticate!(env)
     request = Rack::Request.new(env)
-    if token = request.params['token']
+    if token = request.params.fetch("token", get_auth_bypass_cookie(env))
       auth_bypass_id = process_token(token, env)
     end
     user = auth_bypass_id ? env['warden'].authenticate : env['warden'].authenticate!
     debug_logging(env, "authenticated as #{user.email}") if user
+  end
+
+  def get_auth_bypass_cookie(env)
+    cookie = Rack::Utils.parse_cookies(env)
+    cookie["auth_bypass_token"] if cookie
   end
 
   def set_auth_bypass_cookie(response, env)
