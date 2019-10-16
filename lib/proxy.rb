@@ -26,8 +26,6 @@ class Proxy < Rack::Proxy
   end
 
   def rewrite_env(env)
-    # Proxying hangs in the VM unless the host header is explicitly overridden here.
-    env['HTTP_HOST'] = upstream_url.host
     add_authenticated_user_header(env)
     add_authenticated_user_organisation_header(env)
     env
