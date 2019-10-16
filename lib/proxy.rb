@@ -5,20 +5,18 @@ class Proxy < Rack::Proxy
 
   def initialize(app, upstream_url)
     @upstream_url = URI(upstream_url)
+    @env = {}
     super(app, backend: upstream_url, streaming: false)
   end
 
   def call(env)
+    @env = env
     path = env['PATH_INFO']
 
     if proxy?(path)
       process_token_or_authenticate!(env)
       debug_logging(env, "Proxing request: #{path}")
-      super.tap do |response|
-        set_auth_bypass_cookie(response, env)
-        token_rejected = forbidden_response?(response) && !gds_sso_path?(path)
-        env["warden"].authenticate! if token_rejected
-      end
+      set_auth_bypass_cookie(super, env)
     else
       debug_logging(env, "Request not being proxied: #{path}")
       @app.call(env)
@@ -39,6 +37,7 @@ class Proxy < Rack::Proxy
 
   def rewrite_response(response)
     status, headers, body = response
+    @env["warden"].authenticate! if response[0] == "403" && @env["warden"].present?
 
     allow_iframing(headers)
     fix_content_length(headers, body)
@@ -88,10 +87,6 @@ private
     )
 
     response
-  end
-
-  def forbidden_response?(response)
-    response[0] == "403"
   end
 
   def process_token(token, env)
