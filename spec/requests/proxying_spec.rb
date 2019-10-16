@@ -85,7 +85,7 @@ RSpec.describe "Proxying requests", type: :request do
       end
 
       context "with a token that is valid but doesn't contain the right key" do
-        let(:token) { JWT.encode({ 'foo' => 'bar' }, 'invalid', 'HS256') }
+        let(:token) { JWT.encode({ 'foo' => 'bar' }, jwt_auth_secret, 'HS256') }
         it "redirects the user for authentication" do
           get "#{upstream_path}?token=#{token}"
 
