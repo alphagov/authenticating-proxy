@@ -17,13 +17,9 @@ RSpec.describe Proxy do
   let(:proxy_app) { Proxy.new(inner_app, upstream_uri) }
 
   before do
+    stub_warden_authentication
     stub_request(:get, upstream_uri + upstream_path).
       to_return(body: upstream_body, status: 200, headers: upstream_headers)
-  end
-
-  it 'passes Rack::Lint checks' do
-    lint_app = Rack::Lint.new(Proxy.new(inner_app, upstream_uri))
-    lint_app.call(request_env)
   end
 
   it 'returns the response from the upstream URI' do
@@ -46,5 +42,21 @@ RSpec.describe Proxy do
       rewrote = proxy_app.rewrite_response(response)
       expect(rewrote).to match([status, { "Content-Length" => "19" }, body])
     end
+  end
+
+  def stub_warden_authentication
+    request_env["warden"] = double(
+      authenticate: stub_user,
+      authenticate!: stub_user,
+      user: stub_user,
+    )
+  end
+
+  def stub_user
+    @stub_user ||= double(
+      uid: User.first.uid,
+      organisation_content_id: User.first.organisation_content_id,
+      email: "example@gov.uk"
+    )
   end
 end

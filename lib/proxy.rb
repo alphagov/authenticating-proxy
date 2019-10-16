@@ -14,7 +14,8 @@ class Proxy < Rack::Proxy
     if proxy?(path)
       process_token_or_authenticate!(env)
       debug_logging(env, "Proxing request: #{path}")
-      set_auth_bypass_cookie(super, env)
+      super.tap { |response| env["warden"].authenticate! if forbidden_response?(response) }
+           .then { |response| set_auth_bypass_cookie(response, env) }
     else
       debug_logging(env, "Request not being proxied: #{path}")
       @app.call(env)
@@ -26,8 +27,6 @@ class Proxy < Rack::Proxy
   end
 
   def rewrite_env(env)
-    # Proxying hangs in the VM unless the host header is explicitly overridden here.
-    env['HTTP_HOST'] = upstream_url.host
     add_authenticated_user_header(env)
     add_authenticated_user_organisation_header(env)
     env
@@ -55,10 +54,16 @@ private
 
   def process_token_or_authenticate!(env)
     request = Rack::Request.new(env)
-    if token = request.params['token']
-      content_id = process_token(token, env)
+    if token = request.params.fetch("token", get_auth_bypass_cookie(env))
+      auth_bypass_id = process_token(token, env)
     end
-    authenticate!(env) unless content_id
+    user = auth_bypass_id ? env['warden'].authenticate : env['warden'].authenticate!
+    debug_logging(env, "authenticated as #{user.email}") if user
+  end
+
+  def get_auth_bypass_cookie(env)
+    cookie = Rack::Utils.parse_cookies(env)
+    cookie["auth_bypass_token"] if cookie
   end
 
   def set_auth_bypass_cookie(response, env)
@@ -80,21 +85,18 @@ private
     response
   end
 
+  def forbidden_response?(response)
+    response[0] == "403"
+  end
+
   def process_token(token, env)
     payload, header = JWT.decode(token, jwt_auth_secret, true, { algorithm: 'HS256' })
     env['HTTP_GOVUK_AUTH_BYPASS_ID'] = payload['sub'] if payload.key?('sub')
   rescue JWT::DecodeError
   end
 
-  def authenticate!(env)
-    if env['warden']
-      user = env['warden'].authenticate!
-      debug_logging(env, "authenticated as #{user.email}")
-    end
-  end
-
   def add_authenticated_user_header(env)
-    env['HTTP_X_GOVUK_AUTHENTICATED_USER'] = if env['warden'] && env['warden'].user
+    env['HTTP_X_GOVUK_AUTHENTICATED_USER'] = if env['warden'].user
                                                env['warden'].user.uid.to_s
                                              else
                                                'invalid'
@@ -102,7 +104,7 @@ private
   end
 
   def add_authenticated_user_organisation_header(env)
-    env['HTTP_X_GOVUK_AUTHENTICATED_USER_ORGANISATION'] = if env['warden'] && env['warden'].user
+    env['HTTP_X_GOVUK_AUTHENTICATED_USER_ORGANISATION'] = if env['warden'].user
                                                             env['warden'].user.organisation_content_id.to_s
                                                           else
                                                             'invalid'
