@@ -3,14 +3,14 @@ development:
     default:
       database: authenticating_proxy_development
       hosts:
-        - localhost:27017
+        - <%= ENV.fetch("MONGODB_URI", "localhost:27017") %>
 
 test:
   clients:
     default:
       database: authenticating_proxy_test
       hosts:
-        - localhost:27017
+        - <%= ENV.fetch("MONGODB_URI", "localhost:27017") %>
       options:
         read:
           mode: :primary
@@ -18,7 +18,7 @@ test:
 production:
   clients:
     default:
-      uri: <%= ENV['MONGODB_URI'] %>
+      uri: <%= ENV["MONGODB_URI"] %>
       options:
         write:
           w: majority
