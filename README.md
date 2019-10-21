@@ -53,14 +53,22 @@ valid; this will be done by content-store.
   [signon][]
 - [rack-proxy](https://github.com/ncr/rack-proxy) - rack middleware used to
   proxy requests through to the upstream service.
+- [MongoDB](https://www.mongodb.com/)
 
-### Running the application
+### Setup
 
-The application relies on the `GOVUK_UPSTREAM_URI` being set to run:
+authenticating-proxy is not supported in [govuk-docker][] yet. In the meantime,
+[use the development VM](#running-the-application-in-the-dev-vm) or set things
+up manually:
 
+```sh
+bundle install
+GOVUK_UPSTREAM_URI=http://www.dev.gov.uk bundle exec rails server
 ```
-$ GOVUK_UPSTREAM_URI=https://www.dev.gov.uk ./startup.sh
-```
+
+[govuk-docker]: https://github.com/alphagov/govuk-docker/
+
+### Running the application in the dev VM
 
 On the development VM, `GOVUK_UPSTREAM_URI` defaults to government-frontend. If
 you want to run authenticating-proxy against a real running instance of signon
@@ -82,6 +90,8 @@ $ bundle exec rake users:create name='User Name' email=user@email.com applicatio
 ```
 
 ### Running the test suite
+
+You will need to follow the [setup instructions](#setup), then:
 
 ```
 $ bundle exec rspec
