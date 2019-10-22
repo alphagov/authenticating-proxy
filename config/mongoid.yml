@@ -1,16 +1,12 @@
 development:
   clients:
     default:
-      database: authenticating_proxy_development
-      hosts:
-        - <%= ENV.fetch("MONGODB_URI", "localhost:27017") %>
+      uri: <%= ENV.fetch("MONGODB_URI", "mongodb://localhost:27017/authenticating_proxy_development") %>
 
 test:
   clients:
     default:
-      database: authenticating_proxy_test
-      hosts:
-        - <%= ENV.fetch("MONGODB_URI", "localhost:27017") %>
+      uri: <%= ENV.fetch("TEST_MONGODB_URI", "mongodb://localhost:27017/authenticating_proxy_test") %>
       options:
         read:
           mode: :primary
