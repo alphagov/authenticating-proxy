@@ -131,7 +131,8 @@ it should expire.
 In addition to the JWT standard fields, you can encode arbitrary fields which might
 only have meaning for your application. For example, it is recommended that you store
 some information that describes the piece of content associated with the JWT token (such
-as a content ID).
+as a content ID). Do bear in mind that the data inside a JWT token is not encrypted
+and **must** not include sensitive or personally identifiable data.
 
 ```
   "content_id" => step_by_step.content_id
