@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '5.2.4.3'
 gem 'rack-proxy', '~> 0.6.4'
-gem 'plek', '~> 3.0'
+gem 'plek', '~> 4.0'
 gem 'mongoid', '6.2.1'
 gem 'gds-sso', '~> 15.0.0'
 gem 'govuk_app_config', '~> 2.2'
