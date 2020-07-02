@@ -107,24 +107,29 @@ is a dependency of gds-sso via oauth2 - to encode a token as follows:
 ```
 JWT.encode({
   "sub" => auth_bypass_id,
-  "iss" => current_user.uid,
   "iat" => Time.zone.now.to_i,
   "exp" => 1.month.from_now.to_i,
+  "content_id" => content_id,
 }, ENV['JWT_AUTH_SECRET'], 'HS256')
 ```
 
 Where:
 
-- `sub` value of `auth_bypass_id` is the UUID for the auth bypass of the content item
-- `iss` ("issuer") is the unique ID of the user who created the token
+- `sub` value of `auth_bypass_id` is a unique value determined by the publishing
+  application for a particular draft piece of content
 - `iat` ("issued at") is the time at which the token was created
-- `exp` ("expiration time") is when the token should expire and no longer be valid
+- `exp` ("expiration time") is when the token should expire and no longer be
+   valid
+- `content_id` is the GOV.UK content id for the piece of content that is being
+  shared
 
-These fields are [registered claim names][] in the JWT specification. Providing
-them is recommended as they help to audit when and how the token was created and when
-it should expire.
+`sub`, `iat` and `exp` [registered claims][] as part of the JWT specification.
+Applications are advised to use an expiry on tokens to limit their lifespan
+and set an auth_bypass_id that is relatively simple to rotate were a token
+to be accidentally made public. The `iat` and `content_id` values allow tracing
+the source of a token.
 
-[registered claim names]: https://tools.ietf.org/html/rfc7519#section-4.1
+[registered claim]: https://tools.ietf.org/html/rfc7519#section-4.1
 
 #### Optional special fields
 
