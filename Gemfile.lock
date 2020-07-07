@@ -214,17 +214,17 @@ PLATFORMS
 
 DEPENDENCIES
   byebug
-  gds-sso (~> 15.0.1)
-  govuk_app_config (~> 2.2)
-  mongoid (= 7.1.2)
-  plek (~> 4.0)
-  rack-proxy (~> 0.6.5)
-  rack-test (= 1.1.0)
+  gds-sso
+  govuk_app_config
+  mongoid
+  plek
+  rack-proxy
+  rack-test
   rails (= 5.2.4.3)
-  rspec-rails (= 4.0.1)
-  simplecov (~> 0.18.5)
-  simplecov-rcov (= 0.2.3)
-  webmock (~> 3.8.3)
+  rspec-rails
+  simplecov
+  simplecov-rcov
+  webmock
 
 BUNDLED WITH
    1.16.1
