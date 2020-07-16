@@ -124,7 +124,7 @@ GEM
     plek (4.0.0)
     public_suffix (4.0.3)
     rack (2.2.3)
-    rack-proxy (0.6.4)
+    rack-proxy (0.6.5)
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -218,7 +218,7 @@ DEPENDENCIES
   govuk_app_config (~> 2.2)
   mongoid (= 6.2.1)
   plek (~> 4.0)
-  rack-proxy (~> 0.6.4)
+  rack-proxy (~> 0.6.5)
   rack-test (= 1.1.0)
   rails (= 5.2.4.3)
   rspec-rails (= 4.0.1)
