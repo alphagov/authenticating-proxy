@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '5.2.4.3'
+gem 'rails', '6.0.3.2'
 gem 'rack-proxy', '~> 0.6.5'
 gem 'plek', '~> 4.0'
 gem 'mongoid', '7.1.2'
