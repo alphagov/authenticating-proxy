@@ -16,8 +16,6 @@ module AuthenticatingProxy
   class Application < Rails::Application
     config.load_defaults 6.0
 
-    config.autoload_paths += %W(#{config.root}/lib)
-
     # Enable per-form CSRF tokens. Previous versions had false.
     config.action_controller.per_form_csrf_tokens = false
 
