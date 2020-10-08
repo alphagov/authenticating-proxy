@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe "Proxying requests", type: :request do
   let(:body) { "abc" }
   let(:upstream_path) { "/foo" }

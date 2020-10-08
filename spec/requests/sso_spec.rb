@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe "GDS-SSO requests", type: :request do
   let(:upstream_uri) { ENV["GOVUK_UPSTREAM_URI"] }
   let(:sign_out_path) { "/auth/gds/sign_out" }

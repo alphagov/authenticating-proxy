@@ -1,6 +1,3 @@
-require "rails_helper"
-require "rack"
-
 RSpec.describe Proxy do
   let(:upstream_body) { "hello" }
   let(:upstream_headers) do
