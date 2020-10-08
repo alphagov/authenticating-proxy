@@ -9,25 +9,21 @@ RSpec.describe "Proxying requests", type: :request do
   let(:authenticated_org_content_id) { User.first.organisation_content_id }
 
   around do |example|
-    ENV["JWT_AUTH_SECRET"] = jwt_auth_secret
-    example.run
-    ENV.delete("JWT_AUTH_SECRET")
+    ClimateControl.modify(JWT_AUTH_SECRET: jwt_auth_secret) { example.run }
   end
 
   shared_examples "sets auth-bypass token cookie" do
     it "sets the appropriate environment as the cookie domain" do
-      ENV["GOVUK_APP_DOMAIN_EXTERNAL"] = "integration.publishing.service.gov.uk"
-      get "#{upstream_path}?token=#{token}"
-      expect(response.headers["Set-Cookie"]).to match("domain=.integration.publishing.service.gov.uk")
-      ENV.delete("GOVUK_APP_DOMAIN_EXTERNAL")
+      ClimateControl.modify(GOVUK_APP_DOMAIN_EXTERNAL: "integration.publishing.service.gov.uk") do
+        get "#{upstream_path}?token=#{token}"
+        expect(response.headers["Set-Cookie"]).to match("domain=.integration.publishing.service.gov.uk")
+      end
     end
   end
 
   context "when a user is not authenticated" do
     around do |example|
-      ENV["GDS_SSO_MOCK_INVALID"] = "§1"
-      example.run
-      ENV.delete("GDS_SSO_MOCK_INVALID")
+      ClimateControl.modify(GDS_SSO_MOCK_INVALID: "1") { example.run }
     end
 
     it "redirects the user for authentication" do

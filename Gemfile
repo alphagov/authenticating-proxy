@@ -10,6 +10,7 @@ gem "rack-proxy"
 
 group :development, :test do
   gem "byebug"
+  gem "climate_control"
   gem "rack-test"
   gem "rspec-rails"
   gem "rubocop-govuk"
