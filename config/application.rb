@@ -1,4 +1,4 @@
-require_relative 'boot'
+require_relative "boot"
 
 require "rails"
 
@@ -16,7 +16,5 @@ module AuthenticatingProxy
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
-
-    config.jwt_auth_secret = ENV['JWT_AUTH_SECRET']
   end
 end

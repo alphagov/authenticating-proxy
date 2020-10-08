@@ -1,7 +1,7 @@
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe "healthcheck path", :type => :request do
-  it "should respond with 'OK'" do
+RSpec.describe "healthcheck path", type: :request do
+  it "responds with 'OK'" do
     get "/healthcheck"
 
     expect(response.status).to eq(200)
