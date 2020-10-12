@@ -14,5 +14,4 @@ group :development, :test do
   gem 'webmock', require: false
   gem 'byebug'
   gem 'simplecov', require: false
-  gem 'simplecov-rcov', require: false
 end
