@@ -1,4 +1,4 @@
-require 'rack/proxy'
+require "rack/proxy"
 
 class Proxy < Rack::Proxy
   attr_accessor :upstream_url
@@ -9,7 +9,7 @@ class Proxy < Rack::Proxy
   end
 
   def call(env)
-    path = env['PATH_INFO']
+    path = env["PATH_INFO"]
 
     if proxy?(path)
       process_token_or_authenticate!(env)
@@ -43,23 +43,19 @@ class Proxy < Rack::Proxy
     [
       status,
       # Status doesn't belong in the headers in a rack response triplet.
-      headers.reject { |key, _| %w(status).include?(key) },
-      body
+      headers.reject { |key, _| %w[status].include?(key) },
+      body,
     ]
   end
 
 private
 
-  def jwt_auth_secret
-    Rails.application.config.jwt_auth_secret
-  end
-
   def process_token_or_authenticate!(env)
     request = Rack::Request.new(env)
-    if token = request.params.fetch("token", get_auth_bypass_cookie(env))
+    if (token = request.params.fetch("token", get_auth_bypass_cookie(env)))
       auth_bypass_id = process_token(token, env)
     end
-    user = auth_bypass_id ? env['warden'].authenticate : env['warden'].authenticate!
+    user = auth_bypass_id ? env["warden"].authenticate : env["warden"].authenticate!
     debug_logging(env, "authenticated as #{user.email}") if user
   end
 
@@ -70,18 +66,18 @@ private
 
   def set_auth_bypass_cookie(response, env)
     request = Rack::Request.new(env)
-    return response unless request.params['token']
+    return response unless request.params["token"]
 
     # Override any existing token, we don't really care at this point if the
     # token is valid that's up to the consuming app to validate
     Rack::Utils.set_cookie_header!(
       response[1],
-      'auth_bypass_token',
+      "auth_bypass_token",
       {
-        value: request.params['token'],
-        path: '/',
-        domain: '.' + Plek.new.external_domain,
-      }
+        value: request.params["token"],
+        path: "/",
+        domain: "." + Plek.new.external_domain,
+      },
     )
 
     response
@@ -92,29 +88,30 @@ private
   end
 
   def process_token(token, env)
-    payload, header = JWT.decode(token, jwt_auth_secret, true, { algorithm: 'HS256' })
-    env['HTTP_GOVUK_AUTH_BYPASS_ID'] = payload['sub'] if payload.key?('sub')
+    payload, _header = JWT.decode(token, ENV["JWT_AUTH_SECRET"], true, { algorithm: "HS256" })
+    env["HTTP_GOVUK_AUTH_BYPASS_ID"] = payload["sub"] if payload.key?("sub")
   rescue JWT::DecodeError
+    nil
   end
 
   def add_authenticated_user_header(env)
-    env['HTTP_X_GOVUK_AUTHENTICATED_USER'] = if env['warden'].user
-                                               env['warden'].user.uid.to_s
+    env["HTTP_X_GOVUK_AUTHENTICATED_USER"] = if env["warden"].user
+                                               env["warden"].user.uid.to_s
                                              else
-                                               'invalid'
+                                               "invalid"
                                              end
   end
 
   def add_authenticated_user_organisation_header(env)
-    env['HTTP_X_GOVUK_AUTHENTICATED_USER_ORGANISATION'] = if env['warden'].user
-                                                            env['warden'].user.organisation_content_id.to_s
+    env["HTTP_X_GOVUK_AUTHENTICATED_USER_ORGANISATION"] = if env["warden"].user
+                                                            env["warden"].user.organisation_content_id.to_s
                                                           else
-                                                            'invalid'
+                                                            "invalid"
                                                           end
   end
 
   def healthcheck_path?(path)
-    path == '/healthcheck'
+    path == "/healthcheck"
   end
 
   def gds_sso_path?(path)
@@ -122,7 +119,9 @@ private
   end
 
   def debug_logging(env, message)
-    env['action_dispatch.logger'] and env['action_dispatch.logger'].debug message
+    return unless env["action_dispatch.logger"]
+
+    env["action_dispatch.logger"].debug(message)
   end
 
   # Content-Length header can end up with an incorrect value as Net::HTTP will
@@ -138,10 +137,10 @@ private
     else
       headers.delete(content_length_header)
     end
-    bytesize = body.map(&:bytesize)
+    body.map(&:bytesize)
   end
 
   def allow_iframing(headers)
-    headers.delete('X-Frame-Options')
+    headers.delete("X-Frame-Options")
   end
 end

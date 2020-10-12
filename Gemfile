@@ -1,17 +1,19 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-gem 'rails', '6.0.3.4'
+gem "rails", "6.0.3.4"
 
-gem 'rack-proxy'
-gem 'plek'
-gem 'mongoid'
-gem 'gds-sso'
-gem 'govuk_app_config'
+gem "gds-sso"
+gem "govuk_app_config"
+gem "mongoid"
+gem "plek"
+gem "rack-proxy"
 
 group :development, :test do
-  gem 'rspec-rails'
-  gem 'rack-test'
-  gem 'webmock', require: false
-  gem 'byebug'
-  gem 'simplecov', require: false
+  gem "byebug"
+  gem "climate_control"
+  gem "rack-test"
+  gem "rspec-rails"
+  gem "rubocop-govuk"
+  gem "simplecov", require: false
+  gem "webmock", require: false
 end
