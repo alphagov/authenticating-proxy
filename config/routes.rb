@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  get "/healthcheck", to: proc { [200, {}, %w[OK]] }
+  get "/healthcheck", to: GovukHealthcheck.rack_response(
+    GovukHealthcheck::Mongoid,
+  )
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
