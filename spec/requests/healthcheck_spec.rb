@@ -1,8 +1,13 @@
 RSpec.describe "healthcheck path", type: :request do
-  it "responds with 'OK'" do
+  before do
     get "/healthcheck"
+  end
 
-    expect(response.status).to eq(200)
-    expect(response.body).to eq("OK")
+  it "returns a 200 HTTP status" do
+    expect(response).to have_http_status(:ok)
+  end
+
+  it "includes a status in the response body" do
+    expect(JSON.parse(response.body)).to have_key("status")
   end
 end
