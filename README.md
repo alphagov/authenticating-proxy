@@ -29,23 +29,15 @@ Some of the thinking behind this is [documented in RFC 13][rfc].
 
 ## Technical documentation
 
-### Setup
+### Running the app ([mock mode](https://github.com/alphagov/gds-sso#use-in-development-mode))
 
-authenticating-proxy is not supported in [govuk-docker][] yet. In the meantime,
-[use the development VM](#running-the-application-in-the-dev-vm) or set things
-up manually:
+In GOV.UK Docker, `GOVUK_UPSTREAM_URI` defaults to government-frontend. This
+means that, when you request `authenticating-proxy.dev.gov.uk`, it should behave
+the same as requesting `government-frontend.dev.gov.uk`.
 
-```sh
-bundle install
-GOVUK_UPSTREAM_URI=http://www.dev.gov.uk bundle exec rails server
-```
+### Running the app (real mode)
 
-[govuk-docker]: https://github.com/alphagov/govuk-docker/
-
-### Running the application in the dev VM
-
-On the development VM, `GOVUK_UPSTREAM_URI` defaults to government-frontend. If
-you want to run authenticating-proxy against a real running instance of signon
+If you want to run authenticating-proxy against a real running instance of signon
 (instead of the usual mock-mode), then use the following `bowl` command:
 
 ```
