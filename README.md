@@ -3,8 +3,8 @@
 App to add authentication to the draft version of GOV.UK, so that only users with
 a [signon][] account - or a valid JSON web token ([JWT]) - can access it.
 
-This is a Rails application that proxies requests to an upstream service, first
-performing authentication using `gds-sso` to ensure that only authenticated
+This is a Rails application that [proxies][] requests to an upstream service, first
+performing authentication using [gds-sso][] to ensure that only authenticated
 users are able to view the site. It sets an `X-GOVUK-AUTHENTICATED-USER` header
 so that the upstream service can identify the user.
 
@@ -15,7 +15,7 @@ that token contains a `sub` key, the value of that key is passed upstream in
 the `GOVUK_AUTH_BYPASS_ID` header. NB, the `sub` (or "subject") key is one of the
 [reserved claims of a JWT][].
 
-If a user is authenticated using `gds-sso` and a JWT token is also provided, both
+If a user is authenticated using [gds-sso][] and a JWT token is also provided, both
 sets of information are passed upstream. It is up to the upstream application how
 to handle these cases.
 
@@ -24,6 +24,8 @@ Some of the thinking behind this is [documented in RFC 13][rfc].
 [rfc]: https://github.com/alphagov/govuk-rfcs/blob/master/rfc-013-thoughts-on-access-limiting-in-draft.md
 [JWT]: https://jwt.io/
 [reserved claims of a JWT]: https://auth0.com/docs/tokens/jwt-claims#reserved-claims
+[gds-sso]: http://github.com/alphagov/gds-sso
+[proxies]: https://github.com/ncr/rack-proxy
 
 ## Live examples
 
@@ -41,15 +43,6 @@ Some of the thinking behind this is [documented in RFC 13][rfc].
   bypass, extracted from a token.
 
 ## Technical documentation
-
-### Dependencies
-
-- [alphagov/gds-sso](http://github.com/alphagov/gds-sso) - provides
-  authentication against the GOV.UK single-signon application,
-  [signon][]
-- [rack-proxy](https://github.com/ncr/rack-proxy) - rack middleware used to
-  proxy requests through to the upstream service.
-- [MongoDB](https://www.mongodb.com/)
 
 ### Setup
 
