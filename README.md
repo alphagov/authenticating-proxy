@@ -37,10 +37,8 @@ the same as requesting `government-frontend.dev.gov.uk`.
 
 ### Running the test suite
 
-You will need to follow the [setup instructions](#setup), then:
-
 ```
-$ bundle exec rspec
+bundle exec rake
 ```
 
 ### Further documentation
