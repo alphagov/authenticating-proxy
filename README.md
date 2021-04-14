@@ -31,17 +31,6 @@ Some of the thinking behind this is [documented in RFC 13][rfc].
 
 [https://www-origin.draft.preview.publishing.service.gov.uk/](https://www-origin.draft.preview.publishing.service.gov.uk/)
 
-## Nomenclature
-
-- **`X-GOVUK-AUTHENTICATED-USER`**: The HTTP header which contains the UID of
-  the authenticated user (as reported by Signon).
-- **upstream service**: The destination service that the app is proxying to.
-- **Signon**: Single signon service for GOV.UK authentication.
-- **`GOVUK_UPSTREAM_URI`**: environment variable used to specify the upstream
-  site.
-- **`GOVUK_AUTH_BYPASS_ID`**: The HTTP header which contains the UUID of a auth
-  bypass, extracted from a token.
-
 ## Technical documentation
 
 ### Setup
