@@ -27,10 +27,6 @@ Some of the thinking behind this is [documented in RFC 13][rfc].
 [gds-sso]: http://github.com/alphagov/gds-sso
 [proxies]: https://github.com/ncr/rack-proxy
 
-## Live examples
-
-[https://www-origin.draft.preview.publishing.service.gov.uk/](https://www-origin.draft.preview.publishing.service.gov.uk/)
-
 ## Technical documentation
 
 ### Setup
