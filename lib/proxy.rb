@@ -111,7 +111,7 @@ private
   end
 
   def healthcheck_path?(path)
-    %w[/healthcheck /healthcheck/live /healthcheck/ready].include? path
+    %w[/healthcheck/live /healthcheck/ready].include? path
   end
 
   def gds_sso_path?(path)

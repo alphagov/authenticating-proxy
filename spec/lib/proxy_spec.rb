@@ -25,8 +25,14 @@ RSpec.describe Proxy do
     expect(body).to eq([upstream_body])
   end
 
-  it "does not proxy /healthcheck requests" do
-    _status, _headers, body = proxy_app.call(request_env.merge({ "PATH_INFO" => "/healthcheck" }))
+  it "does not proxy /healthcheck/live requests" do
+    _status, _headers, body = proxy_app.call(request_env.merge({ "PATH_INFO" => "/healthcheck/live" }))
+
+    expect(body).to eq(["Rails App"])
+  end
+
+  it "does not proxy /healthcheck/ready requests" do
+    _status, _headers, body = proxy_app.call(request_env.merge({ "PATH_INFO" => "/healthcheck/ready" }))
 
     expect(body).to eq(["Rails App"])
   end
