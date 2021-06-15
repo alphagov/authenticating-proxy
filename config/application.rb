@@ -10,7 +10,7 @@ Bundler.require(*Rails.groups)
 
 module AuthenticatingProxy
   class Application < Rails::Application
-    config.load_defaults 6.0
+    config.load_defaults 6.1
     config.eager_load_paths << Rails.root.join("lib")
     config.autoload_paths << Rails.root.join("lib")
 
