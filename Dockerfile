@@ -1,22 +1,42 @@
+# TODO: make this default to govuk-ruby once it's being pushed somewhere public
 ARG base_image=ruby:2.7.2
-FROM ${base_image}
+ARG app_home=/app
 
-RUN apt-get update -qq && apt-get upgrade -y
-RUN apt-get install -y build-essential nodejs && apt-get clean
-RUN gem install foreman
+FROM ${base_image} AS builder
 
-ENV GOVUK_APP_NAME authenticating-proxy
-ENV PORT 3107
-ENV RAILS_ENV production
+ARG app_home
 
-ENV APP_HOME /app
-RUN mkdir $APP_HOME
+RUN apt-get update -qy && \
+    apt-get upgrade -y
 
-WORKDIR $APP_HOME
-ADD Gemfile* $APP_HOME/
-ADD .ruby-version $APP_HOME/
-RUN bundle install
+ENV RAILS_ENV=production GOVUK_APP_NAME=authenticating-proxy
 
-ADD . $APP_HOME
+RUN mkdir -p ${app_home}
 
-CMD foreman run web
+WORKDIR ${app_home}
+
+COPY Gemfile* .ruby-version ${app_home}/
+
+RUN bundle config set deployment 'true' && \
+    bundle config set without 'development test' && \
+    bundle install -j8 --retry=2
+
+COPY . ${app_home}
+
+
+FROM $base_image
+
+ARG app_home
+
+RUN apt-get update -qy && \
+    apt-get upgrade -y
+
+ENV RAILS_ENV=production GOVUK_APP_NAME=authenticating-proxy
+
+COPY --from=builder /usr/local/bundle/ /usr/local/bundle/
+
+COPY --from=builder ${app_home} ${app_home}/
+
+WORKDIR ${app_home}
+
+CMD bundle exec puma
