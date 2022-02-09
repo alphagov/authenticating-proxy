@@ -108,7 +108,7 @@ GEM
       warden-oauth2 (~> 0.0.1)
     globalid (1.0.0)
       activesupport (>= 5.0)
-    govuk_app_config (4.2.0)
+    govuk_app_config (4.3.0)
       logstasher (>= 1.2.2, < 2.2.0)
       puma (~> 5.0)
       sentry-rails (~> 4.5.0)
@@ -117,7 +117,7 @@ GEM
       unicorn (>= 5.4, < 5.9)
     hashdiff (1.0.1)
     hashie (4.1.0)
-    i18n (1.8.11)
+    i18n (1.9.1)
       concurrent-ruby (~> 1.0)
     jwt (2.2.3)
     kgio (2.11.4)
@@ -168,7 +168,7 @@ GEM
       ast (~> 2.4.1)
     plek (4.0.0)
     public_suffix (4.0.6)
-    puma (5.5.2)
+    puma (5.6.1)
       nio4r (~> 2.0)
     racc (1.6.0)
     rack (2.2.3)
@@ -295,7 +295,7 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    zeitwerk (2.5.3)
+    zeitwerk (2.5.4)
 
 PLATFORMS
   ruby
