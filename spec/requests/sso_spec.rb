@@ -6,6 +6,6 @@ RSpec.describe "GDS-SSO requests", type: :request do
     get sign_out_path
 
     expect(response.status).to eq(302)
-    expect(response["Location"]).to eq(Plek.new.external_url_for("signon") + "/users/sign_out")
+    expect(response["Location"]).to eq("#{Plek.new.external_url_for('signon')}/users/sign_out")
   end
 end

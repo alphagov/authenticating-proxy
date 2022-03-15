@@ -76,7 +76,7 @@ private
       {
         value: request.params["token"],
         path: "/",
-        domain: "." + Plek.new.external_domain,
+        domain: ".#{Plek.new.external_domain}",
       },
     )
 

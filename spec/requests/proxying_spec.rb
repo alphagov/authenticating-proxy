@@ -104,7 +104,7 @@ RSpec.describe "Proxying requests", type: :request do
     end
 
     context "with a JWT token in a cookie" do
-      let(:cookie) { "auth_bypass_token=#{token}; Path=/; Domain=#{'.' + upstream_uri}" }
+      let(:cookie) { "auth_bypass_token=#{token}; Path=/; Domain=#{".#{upstream_uri}"}" }
 
       before do
         stub_request(:get, upstream_uri + upstream_path).to_return(body: body)
