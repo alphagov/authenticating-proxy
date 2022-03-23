@@ -1,9 +1,10 @@
 source "https://rubygems.org"
 
-gem "rails", "6.1.4.7"
+gem "rails", "7.0.2"
 
 gem "gds-sso"
 gem "govuk_app_config"
+gem "mongo", "2.15.1"
 gem "mongoid"
 gem "plek"
 gem "rack-proxy"
