@@ -8,6 +8,7 @@ RUN gem install foreman
 ENV GOVUK_APP_NAME authenticating-proxy
 ENV PORT 3107
 ENV RAILS_ENV production
+ENV ENV GOVUK_PROMETHEUS_EXPORTER true
 
 ENV APP_HOME /app
 RUN mkdir $APP_HOME
