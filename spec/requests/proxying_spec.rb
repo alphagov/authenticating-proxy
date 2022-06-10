@@ -68,6 +68,11 @@ RSpec.describe "Proxying requests", type: :request do
         expect(response.cookies["auth_bypass_token"]).to eq(token)
       end
 
+      it "does not include a session cookie" do
+        response.cookies["_govuk-authenticating-proxy_session"] = SecureRandom.hex(32)
+        expect(response.cookies["_govuk-authenticating-proxy_session"]).to be_nil
+      end
+
       include_examples "sets auth-bypass token cookie"
 
       context "with an invalid token" do

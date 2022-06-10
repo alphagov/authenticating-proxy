@@ -11,7 +11,11 @@ gem "rack-proxy"
 
 group :development, :test do
   gem "byebug"
+  gem "capybara"
   gem "climate_control"
+  gem "gds-api-adapters"
+  gem "govuk_schemas"
+  gem "govuk_test"
   gem "rack-test"
   gem "rspec-rails"
   gem "rubocop-govuk"

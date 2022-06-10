@@ -1,12 +1,21 @@
 ENV["RAILS_ENV"] ||= "test"
 ENV["GOVUK_UPSTREAM_URI"] = "http://upstream-host.com"
+# ENV["GOVUK_WEBSITE_ROOT"] = "http://www.test.gov.uk"
+# ENV["GOVUK_APP_DOMAIN"] = "test.gov.uk"
+ENV["GOVUK_APP_DOMAIN_EXTERNAL"] = "https://govuk-content-store-examples.herokuapp.com/"
 
 require "simplecov"
 SimpleCov.start "rails"
 
 require File.expand_path("../config/environment", __dir__)
+require "gds_api/test_helpers/content_store"
 require "rspec/rails"
 require "webmock/rspec"
+
+GovukTest.configure
+# WebMock.disable_net_connect!(
+#   allow_localhost: true,
+# )
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
@@ -19,6 +28,8 @@ RSpec.configure do |config|
     #     # => "be bigger than 2"
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end
+
+  config.include GdsApi::TestHelpers::ContentStore
 
   config.mock_with :rspec do |mocks|
     # Prevents you from mocking or stubbing a method that does not exist on
