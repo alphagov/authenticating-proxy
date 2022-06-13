@@ -106,6 +106,23 @@ RSpec.describe "Proxying requests", type: :request do
           expect(response["Location"]).to eq("http://www.example.com/auth/gds")
         end
       end
+
+      context "testing for bug" do
+        it "does not have the session cookie" do
+          expect(response.cookies).not_to include("_govuk-authenticating-proxy_session")
+        end
+
+        context "visit another page" do
+          it "redirects the user for authentication" do
+            some_other_path = "/somewhere/else"
+            stub_request(:get, upstream_uri + some_other_path + "?token=#{token}").to_return(body: body, status: 403)
+            get "#{some_other_path}?token=#{token}"
+
+            expect(response.status).to eq(302)
+            expect(response.cookies).not_to include("_govuk-authenticating-proxy_session")
+          end
+        end
+      end
     end
 
     context "with a JWT token in a cookie" do
