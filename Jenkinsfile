@@ -2,7 +2,7 @@
 
 library("govuk")
 
-node ('mongodb-2.4') {
+node ('mongodb-4.0') {
   govuk.buildProject(
     beforeTest: {
       govuk.setEnvar("GOVUK_UPSTREAM_URI", "http://test.example.com")
