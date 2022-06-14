@@ -2,12 +2,17 @@ development:
   clients:
     default:
       uri: <%= ENV.fetch("MONGODB_URI", "mongodb://localhost:27017/authenticating_proxy_development") %>
+      options:
+        direct_connection: <%= ENV.fetch("MONGODB_DIRECT_CONNECTION", 'false').downcase == 'true' %>
+        retry_writes: false
 
 test:
   clients:
     default:
       uri: <%= ENV.fetch("TEST_MONGODB_URI", "mongodb://localhost:27017/authenticating_proxy_test") %>
       options:
+        direct_connection: <%= ENV.fetch("MONGODB_DIRECT_CONNECTION", 'false').downcase == 'true' %>
+        retry_writes: false
         read:
           mode: :primary
 
@@ -16,7 +21,8 @@ production:
     default:
       uri: <%= ENV["MONGODB_URI"] %>
       options:
-        write:
-          w: majority
         read:
           mode: :primary_preferred
+        retry_writes: false
+        write:
+          w: majority

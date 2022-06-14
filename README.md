@@ -41,6 +41,16 @@ the same as requesting `government-frontend.dev.gov.uk`.
 bundle exec rake
 ```
 
+### MongoDB vs documentDB
+
+In GOV.UK Docker and in CI the app runs against MongoDB 4.0, but in production
+it attaches to a DocumentDB cluster (a "Mongo 4.0-compatible" wrapper over one
+or more Aurora instances). For most purposes this is fine, but if you make any
+serious changes you may want to run your local tests or dev machine against a
+real DocumentDB cluster. Instructions in the docs: [documentdb](docs/documentdb) 
+
+
+
 ### Further documentation
 
 Check the [`docs/`](docs/) directory.
