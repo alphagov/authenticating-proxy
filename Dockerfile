@@ -3,7 +3,6 @@ FROM $base_image
 
 RUN apt-get update -qq && apt-get upgrade -y
 RUN apt-get install -y build-essential nodejs && apt-get clean
-RUN gem install foreman
 
 ENV GOVUK_APP_NAME authenticating-proxy
 ENV PORT 3107
@@ -20,4 +19,4 @@ RUN bundle install
 
 ADD . $APP_HOME
 
-CMD foreman run web
+CMD bundle exec puma
