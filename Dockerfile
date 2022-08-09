@@ -1,22 +1,26 @@
-ARG base_image=ruby:2.7.6-slim-buster
-FROM $base_image
+ARG base_image=ghcr.io/alphagov/govuk-ruby-base:2.7.6
+ARG builder_image=ghcr.io/alphagov/govuk-ruby-builder:2.7.6
 
-RUN apt-get update -qq && apt-get upgrade -y
-RUN apt-get install -y build-essential nodejs && apt-get clean
+FROM $builder_image AS builder
 
-ENV GOVUK_APP_NAME authenticating-proxy
-ENV PORT 3107
-ENV RAILS_ENV production
-ENV ENV GOVUK_PROMETHEUS_EXPORTER true
+WORKDIR /app
 
-ENV APP_HOME /app
-RUN mkdir $APP_HOME
+COPY Gemfile* .ruby-version /app/
 
-WORKDIR $APP_HOME
-ADD Gemfile* $APP_HOME/
-ADD .ruby-version $APP_HOME/
 RUN bundle install
 
-ADD . $APP_HOME
+COPY . /app
+
+
+FROM $base_image
+
+ENV GOVUK_APP_NAME=authenticating-proxy PORT=3107
+
+WORKDIR /app
+
+COPY --from=builder /usr/local/bundle/ /usr/local/bundle/
+COPY --from=builder /app /app
+ 
+USER app
 
 CMD bundle exec puma
