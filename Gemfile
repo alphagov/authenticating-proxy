@@ -10,6 +10,7 @@ gem "plek"
 gem "rack-proxy"
 
 group :development, :test do
+  gem "brakeman"
   gem "byebug"
   gem "climate_control"
   gem "rack-test"

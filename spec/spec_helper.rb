@@ -1,5 +1,4 @@
 ENV["RAILS_ENV"] ||= "test"
-ENV["GOVUK_UPSTREAM_URI"] = "http://upstream-host.com"
 
 require "simplecov"
 SimpleCov.start "rails"

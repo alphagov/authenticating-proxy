@@ -47,4 +47,5 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
+  ENV["GOVUK_UPSTREAM_URI"] = "http://test.example.com"
 end
