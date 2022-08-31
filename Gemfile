@@ -4,7 +4,7 @@ gem "rails", "7.0.3.1"
 
 gem "gds-sso"
 gem "govuk_app_config"
-gem "mongo", "2.15.1"
+gem "mongo", "2.18.1"
 gem "mongoid"
 gem "plek"
 gem "rack-proxy"
