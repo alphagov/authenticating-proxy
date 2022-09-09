@@ -41,7 +41,7 @@ RSpec.describe "Proxying requests", type: :request do
 
     context "with a JWT token in URL query string" do
       before do
-        stub_request(:get, upstream_uri + upstream_path + "?token=#{token}").to_return(body: body)
+        stub_request(:get, upstream_uri + upstream_path + "?token=#{token}").to_return(body:)
         get "#{upstream_path}?token=#{token}"
       end
 
@@ -83,7 +83,7 @@ RSpec.describe "Proxying requests", type: :request do
 
       context "with a token that is rejected by the service" do
         it "redirects the user for authentication" do
-          stub_request(:get, upstream_uri + upstream_path + "?token=#{token}").to_return(body: body, status: 403)
+          stub_request(:get, upstream_uri + upstream_path + "?token=#{token}").to_return(body:, status: 403)
           get "#{upstream_path}?token=#{token}"
 
           expect(response.status).to eq(302)
@@ -107,7 +107,7 @@ RSpec.describe "Proxying requests", type: :request do
       let(:cookie) { "auth_bypass_token=#{token}; Path=/; Domain=#{".#{upstream_uri}"}" }
 
       before do
-        stub_request(:get, upstream_uri + upstream_path).to_return(body: body)
+        stub_request(:get, upstream_uri + upstream_path).to_return(body:)
         get upstream_path, headers: { Cookie: cookie }
       end
 
@@ -134,7 +134,7 @@ RSpec.describe "Proxying requests", type: :request do
 
   context "when a user is authenticated" do
     before do
-      stub_request(:get, upstream_uri + upstream_path).to_return(body: body)
+      stub_request(:get, upstream_uri + upstream_path).to_return(body:)
       get upstream_path
     end
 
@@ -157,7 +157,7 @@ RSpec.describe "Proxying requests", type: :request do
     let(:upstream_uri_with_token) { "#{upstream_uri}#{upstream_path}?token=#{token}" }
 
     before do
-      stub_request(:get, upstream_uri_with_token).to_return(body: body)
+      stub_request(:get, upstream_uri_with_token).to_return(body:)
       get "#{upstream_path}?token=#{token}"
     end
 
@@ -196,7 +196,7 @@ RSpec.describe "Proxying requests", type: :request do
     let(:upstream_uri_with_token) { "#{upstream_uri}#{upstream_path}?token=#{token}" }
 
     before do
-      stub_request(:get, upstream_uri_with_token).to_return(body: body)
+      stub_request(:get, upstream_uri_with_token).to_return(body:)
       get "#{upstream_path}?token=#{token}"
     end
 
