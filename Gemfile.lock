@@ -300,6 +300,7 @@ DEPENDENCIES
   climate_control
   gds-sso
   govuk_app_config
+  mail (~> 2.7.1)
   mongo (= 2.15.1)
   mongoid
   plek
