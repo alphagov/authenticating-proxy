@@ -4,8 +4,6 @@ ARG builder_image=ghcr.io/alphagov/govuk-ruby-builder:$ruby_version
 
 
 FROM $builder_image AS builder
-RUN apt-get update -qq && apt-get upgrade -y
-RUN apt-get install -y libpq-dev && apt-get clean
 
 WORKDIR $APP_HOME
 COPY Gemfile* .ruby-version ./
@@ -15,8 +13,6 @@ RUN bootsnap precompile --gemfile .
 
 
 FROM $base_image
-RUN apt-get update -qq && apt-get upgrade -y
-RUN apt-get install -y libpq-dev && apt-get clean
 
 ENV GOVUK_APP_NAME=authenticating-proxy
 
