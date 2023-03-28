@@ -27,6 +27,8 @@ class Proxy < Rack::Proxy
   end
 
   def rewrite_env(env)
+    env["HTTP_X_FORWARDED_HOST"] = env["HTTP_HOST"]
+
     # HTTP HOST header removed as it can supersede backend host
     env.delete("HTTP_HOST")
     add_authenticated_user_header(env)
