@@ -16,7 +16,9 @@ RSpec.describe "Proxying requests", type: :request do
     it "sets the appropriate environment as the cookie domain" do
       ClimateControl.modify(GOVUK_APP_DOMAIN_EXTERNAL: "integration.publishing.service.gov.uk") do
         get "#{upstream_path}?token=#{token}"
-        expect(response.headers["Set-Cookie"]).to match("domain=.integration.publishing.service.gov.uk")
+
+        auth_bypass_token_cookie = Array(response.headers["Set-Cookie"]).find { |cookie| cookie[/auth_bypass_token=/] }
+        expect(auth_bypass_token_cookie).to match("domain=.integration.publishing.service.gov.uk")
       end
     end
   end
