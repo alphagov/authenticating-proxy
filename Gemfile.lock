@@ -135,7 +135,7 @@ GEM
     irb (1.10.1)
       rdoc
       reline (>= 0.3.8)
-    json (2.7.0)
+    json (2.7.1)
     jwt (2.7.1)
     language_server-protocol (3.17.0.3)
     logstasher (2.1.5)
