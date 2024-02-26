@@ -114,7 +114,7 @@ GEM
     globalid (1.2.1)
       activesupport (>= 6.1)
     google-protobuf (3.25.3)
-    googleapis-common-protos-types (1.12.0)
+    googleapis-common-protos-types (1.13.0)
       google-protobuf (~> 3.18)
     govuk_app_config (9.9.1)
       logstasher (~> 2.1)
