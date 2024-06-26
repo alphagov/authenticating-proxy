@@ -50,7 +50,7 @@ RSpec.describe Proxy do
 
   def stub_warden_authentication
     request_env["warden"] = instance_double(
-      "Warden::Proxy",
+      Warden::Proxy,
       authenticate: stub_user,
       authenticate!: stub_user,
       user: stub_user,
@@ -59,7 +59,7 @@ RSpec.describe Proxy do
 
   def stub_user
     @stub_user ||= instance_double(
-      "User",
+      User,
       uid: User.first.uid,
       organisation_content_id: User.first.organisation_content_id,
       email: "example@gov.uk",
