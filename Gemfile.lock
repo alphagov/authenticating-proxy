@@ -369,7 +369,7 @@ GEM
     opentelemetry-instrumentation-ruby_kafka (0.21.3)
       opentelemetry-api (~> 1.0)
       opentelemetry-instrumentation-base (~> 0.22.1)
-    opentelemetry-instrumentation-sidekiq (0.25.6)
+    opentelemetry-instrumentation-sidekiq (0.25.7)
       opentelemetry-api (~> 1.0)
       opentelemetry-instrumentation-base (~> 0.22.1)
     opentelemetry-instrumentation-sinatra (0.24.1)
