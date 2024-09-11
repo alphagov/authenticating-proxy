@@ -109,10 +109,10 @@ GEM
       warden-oauth2 (~> 0.0.1)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    google-protobuf (4.28.0)
+    google-protobuf (4.28.1)
       bigdecimal
       rake (>= 13)
-    googleapis-common-protos-types (1.15.0)
+    googleapis-common-protos-types (1.16.0)
       google-protobuf (>= 3.18, < 5.a)
     govuk_app_config (9.14.0)
       logstasher (~> 2.1)
