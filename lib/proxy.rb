@@ -53,12 +53,14 @@ class Proxy < Rack::Proxy
 private
 
   def process_token_or_authenticate!(env)
-    request = Rack::Request.new(env)
-    if (token = request.params.fetch("token", get_auth_bypass_cookie(env)))
-      auth_bypass_id = process_token(token, env)
+    rescue_invalid_request do
+      request = Rack::Request.new(env)
+      if (token = request.params.fetch("token", get_auth_bypass_cookie(env)))
+        auth_bypass_id = process_token(token, env)
+      end
+      user = auth_bypass_id ? env["warden"].authenticate : env["warden"].authenticate!
+      debug_logging(env, "authenticated as #{user.email}") if user
     end
-    user = auth_bypass_id ? env["warden"].authenticate : env["warden"].authenticate!
-    debug_logging(env, "authenticated as #{user.email}") if user
   end
 
   def get_auth_bypass_cookie(env)
@@ -67,22 +69,24 @@ private
   end
 
   def set_auth_bypass_cookie(response, env)
-    request = Rack::Request.new(env)
-    return response unless request.params["token"]
+    rescue_invalid_request do
+      request = Rack::Request.new(env)
+      return response unless request.params["token"]
 
-    # Override any existing token, we don't really care at this point if the
-    # token is valid that's up to the consuming app to validate
-    Rack::Utils.set_cookie_header!(
-      response[1],
-      "auth_bypass_token",
-      {
-        value: request.params["token"],
-        path: "/",
-        domain: ".#{Plek.new.external_domain}",
-      },
-    )
+      # Override any existing token, we don't really care at this point if the
+      # token is valid that's up to the consuming app to validate
+      Rack::Utils.set_cookie_header!(
+        response[1],
+        "auth_bypass_token",
+        {
+          value: request.params["token"],
+          path: "/",
+          domain: ".#{Plek.new.external_domain}",
+        },
+      )
 
-    response
+      response
+    end
   end
 
   def forbidden_response?(response)
@@ -144,5 +148,11 @@ private
 
   def allow_iframing(headers)
     headers.delete("X-Frame-Options")
+  end
+
+  def rescue_invalid_request
+    yield
+  rescue Rack::Multipart::EmptyContentError
+    rewrite_response([400, {}, ""])
   end
 end
