@@ -153,6 +153,6 @@ private
   def rescue_invalid_request
     yield
   rescue Rack::Multipart::EmptyContentError
-    rewrite_response([400, {}, ""])
+    rewrite_response([400, {}, [""]])
   end
 end
