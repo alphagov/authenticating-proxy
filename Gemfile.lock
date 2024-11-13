@@ -129,7 +129,7 @@ GEM
       sentry-rails (~> 5.3)
       sentry-ruby (~> 5.3)
       statsd-ruby (~> 1.5)
-    hashdiff (1.1.1)
+    hashdiff (1.1.2)
     hashie (5.0.0)
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
