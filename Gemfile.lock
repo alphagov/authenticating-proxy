@@ -96,12 +96,12 @@ GEM
     docile (1.4.1)
     drb (2.2.1)
     erubi (1.13.0)
-    faraday (2.12.0)
-      faraday-net_http (>= 2.0, < 3.4)
+    faraday (2.12.1)
+      faraday-net_http (>= 2.0, < 3.5)
       json
       logger
-    faraday-net_http (3.3.0)
-      net-http
+    faraday-net_http (3.4.0)
+      net-http (>= 0.5.0)
     gds-sso (19.1.0)
       oauth2 (~> 2.0)
       omniauth (~> 2.1)
@@ -137,7 +137,7 @@ GEM
     irb (1.14.1)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    json (2.8.1)
+    json (2.8.2)
     jwt (2.9.3)
       base64
     language_server-protocol (3.17.0.3)
@@ -526,7 +526,7 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.6.0)
-    uri (1.0.1)
+    uri (1.0.2)
     useragent (0.16.10)
     version_gem (1.1.4)
     warden (1.2.9)
