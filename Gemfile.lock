@@ -117,7 +117,7 @@ GEM
       rake (>= 13)
     googleapis-common-protos-types (1.16.0)
       google-protobuf (>= 3.18, < 5.a)
-    govuk_app_config (9.15.4)
+    govuk_app_config (9.15.5)
       logstasher (~> 2.1)
       opentelemetry-exporter-otlp (>= 0.25, < 0.30)
       opentelemetry-instrumentation-all (>= 0.39.1, < 0.70.0)
@@ -172,7 +172,7 @@ GEM
     net-smtp (0.5.0)
       net-protocol
     nio4r (2.7.4)
-    nokogiri (1.17.0)
+    nokogiri (1.17.1)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     oauth2 (2.0.9)
