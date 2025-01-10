@@ -141,7 +141,7 @@ GEM
     jwt (2.10.1)
       base64
     language_server-protocol (3.17.0.3)
-    logger (1.6.4)
+    logger (1.6.5)
     logstasher (2.1.5)
       activesupport (>= 5.2)
       request_store
