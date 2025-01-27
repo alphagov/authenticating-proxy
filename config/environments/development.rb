@@ -56,4 +56,6 @@ Rails.application.configure do
   config.hosts += [
     "authenticating-proxy.dev.gov.uk",
   ]
+
+  ENV["GOVUK_UPSTREAM_URI"] = "http://test.example.com"
 end
