@@ -568,7 +568,7 @@ GEM
     unicode-emoji (4.0.4)
     uri (1.0.3)
     useragent (0.16.11)
-    version_gem (1.1.8)
+    version_gem (1.1.9)
     warden (1.2.9)
       rack (>= 2.0.9)
     warden-oauth2 (0.0.1)
