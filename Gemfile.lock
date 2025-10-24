@@ -497,9 +497,9 @@ GEM
       rubocop (~> 1.72, >= 1.72.1)
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
-    sentry-rails (5.28.0)
+    sentry-rails (5.28.1)
       railties (>= 5.0)
-      sentry-ruby (~> 5.28.0)
+      sentry-ruby (~> 5.28.1)
     sentry-ruby (5.28.1)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
