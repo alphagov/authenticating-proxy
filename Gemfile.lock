@@ -91,7 +91,7 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
-    date (3.4.1)
+    date (3.5.0)
     diff-lcs (1.6.2)
     docile (1.4.1)
     drb (2.2.3)
