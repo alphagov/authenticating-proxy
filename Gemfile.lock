@@ -91,7 +91,7 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
-    date (3.5.0)
+    date (3.5.1)
     diff-lcs (1.6.2)
     docile (1.4.1)
     drb (2.2.3)
@@ -381,7 +381,7 @@ GEM
     prism (1.6.0)
     prometheus_exporter (2.3.1)
       webrick
-    psych (5.2.6)
+    psych (5.3.0)
       date
       stringio
     public_suffix (7.0.0)
