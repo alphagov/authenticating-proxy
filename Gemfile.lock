@@ -134,7 +134,7 @@ GEM
       statsd-ruby (~> 1.5)
     hashdiff (1.2.1)
     hashie (5.0.0)
-    i18n (1.14.7)
+    i18n (1.14.8)
       concurrent-ruby (~> 1.0)
     io-console (0.8.2)
     irb (1.16.0)
