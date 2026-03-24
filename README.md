@@ -31,9 +31,9 @@ Some of the thinking behind this is [documented in RFC 13][rfc].
 
 ### Running the app
 
-In GOV.UK Docker, `GOVUK_UPSTREAM_URI` defaults to government-frontend. This
+In GOV.UK Docker, `GOVUK_UPSTREAM_URI` defaults to `frontend`. This
 means that, when you request `authenticating-proxy.dev.gov.uk`, it should behave
-the same as requesting `government-frontend.dev.gov.uk`.
+the same as requesting `frontend.dev.gov.uk`.
 
 ### Running the test suite
 
