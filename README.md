@@ -5,8 +5,10 @@ a [signon][] account - or a valid JSON web token ([JWT]) - can access it.
 
 This is a Rails application that [proxies][] requests to an upstream service, first
 performing authentication using [gds-sso][] to ensure that only authenticated
-users are able to view the site. It sets an `X-GOVUK-AUTHENTICATED-USER` header
-so that the upstream service can identify the user.
+users are able to view the site. It sets a `X-GOVUK-AUTHENTICATED-USER` header and a 
+`X_GOVUK_AUTHENTICATED_USER_ORGANISATION` header so that the upstream service can identify the user.
+
+It also removes the `Host` header and replaces it with a `X-Forwarded-Host` header.
 
 The application also supports bypassing authentication via a valid JWT token.
 If the URL being requested includes a `token` querystring containing a valid
@@ -19,6 +21,8 @@ If a user is authenticated using [gds-sso][] and a JWT token is also provided, b
 sets of information are passed upstream. It is up to the upstream application how
 to handle these cases.
 
+See the [request flow](https://github.com/alphagov/router?tab=readme-ov-file#draft-stack) with draft router.
+
 Some of the thinking behind this is [documented in RFC 13][rfc].
 
 [rfc]: https://github.com/alphagov/govuk-rfcs/blob/master/rfc-013-thoughts-on-access-limiting-in-draft.md
@@ -28,6 +32,8 @@ Some of the thinking behind this is [documented in RFC 13][rfc].
 [proxies]: https://github.com/ncr/rack-proxy
 
 ## Technical documentation
+
+The proxy works by subclassing [rack-proxy](https://github.com/ncr/rack-proxy/blob/57973871f4f8fa1cf6cd7bc73d7c042201ec20b4/lib/rack/proxy.rb) methods (e.g. `call` to perform the request)
 
 ### Running the app
 
