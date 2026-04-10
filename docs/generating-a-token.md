@@ -1,9 +1,9 @@
 # Generating an auth bypass token
 
 Applications which want to generate a token valid for bypassing authentication will
-need to have access to the same value for the JWT_AUTH_SECRET environment variable.
+need to have access to the same value for the `JWT_AUTH_SECRET` environment variable.
 They can then use the JWT library - which will probably already be present, since it
-is a dependency of gds-sso via oauth2 - to encode a token as follows:
+is a dependency of `gds-sso` via oauth2 - to encode a token as follows:
 
 ```
 JWT.encode({

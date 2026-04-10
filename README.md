@@ -41,6 +41,10 @@ In GOV.UK Docker, `GOVUK_UPSTREAM_URI` defaults to `frontend`. This
 means that, when you request `authenticating-proxy.dev.gov.uk`, it should behave
 the same as requesting `frontend.dev.gov.uk`.
 
+### Generating a token
+
+See [generating a token](docs/generating-a-token.md)
+
 ### Running the test suite
 
 ```
