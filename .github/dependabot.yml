@@ -8,6 +8,15 @@ updates:
       - dependency-type: "all"
     cooldown:
       default-days: 3
+    groups:
+      test:
+        patterns:
+          - "climate_control"
+          - "govuk_test"
+          - "rack-test"
+          - "rspec-*"
+          - "simplecov"
+          - "webmock"
 
   - package-ecosystem: github-actions
     directory: /
