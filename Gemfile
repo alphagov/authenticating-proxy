@@ -7,7 +7,7 @@ gem "gds-sso"
 gem "govuk_app_config"
 gem "pg"
 gem "plek"
-gem "rack-proxy"
+gem "rack-proxy", "~> 1.0"
 
 group :development, :test do
   gem "brakeman"
