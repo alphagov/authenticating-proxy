@@ -39,12 +39,19 @@ RSpec.describe Proxy do
 
   describe "#rewrite_response" do
     let(:status) { 200 }
-    let(:body) { ["1234 1234 1234 1234"] }
-    let(:response) { [status, { "Content-Length" => "5" }, body] }
 
     it "corrects an incorrect content-length header" do
+      body = ["1234 1234 1234 1234"]
+      response = [status, { "Content-Length" => "5" }, body]
       rewrote = proxy_app.rewrite_response(response)
       expect(rewrote).to match([status, { "Content-Length" => "19" }, body])
+    end
+
+    it "doesn't fail when an element of the response body doesn't have a bytesize method" do
+      body = [nil]
+      response = [status, { "Content-Length" => "5" }, body]
+      rewrote = proxy_app.rewrite_response(response)
+      expect(rewrote).to match([status, {}, body])
     end
   end
 
