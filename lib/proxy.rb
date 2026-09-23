@@ -143,7 +143,6 @@ private
     else
       headers.delete(content_length_header)
     end
-    body.map(&:bytesize)
   end
 
   def allow_iframing(headers)
