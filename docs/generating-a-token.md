@@ -24,13 +24,13 @@ Where:
 - `content_id` is the GOV.UK content id for the piece of content that is being
   shared
 
-`sub`, `iat` and `exp` [registered claims][] as part of the JWT specification.
+`sub`, `iat` and `exp` [registered claims] as part of the JWT specification.
 Applications are advised to use an expiry on tokens to limit their lifespan
 and set an auth_bypass_id that is relatively simple to rotate were a token
 to be accidentally made public. The `iat` and `content_id` values allow tracing
 the source of a token.
 
-[registered claim]: https://tools.ietf.org/html/rfc7519#section-4.1
+[registered claims]: https://tools.ietf.org/html/rfc7519#section-4.1
 
 ## Optional special fields
 
