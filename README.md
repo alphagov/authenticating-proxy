@@ -10,8 +10,9 @@ Some of the thinking behind this is [documented in RFC 13][rfc].
 ## Authentication
 
 The app performs authentication using [gds-sso][] to ensure that only authenticated
-users are able to view the site. It sets a `X-GOVUK-AUTHENTICATED-USER` header and a 
-`X_GOVUK_AUTHENTICATED_USER_ORGANISATION` header so that the upstream service can identify the user.
+users are able to view the site. It sets the following headers so that the upstream service can identify the user:
+1. `X-GOVUK-AUTHENTICATED-USER`
+2. `X_GOVUK_AUTHENTICATED_USER_ORGANISATION`
 
 It also removes the `Host` header and replaces it with a `X-Forwarded-Host` header.
 
